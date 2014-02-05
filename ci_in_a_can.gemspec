@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = CiInACan::VERSION
   spec.authors       = ["Darren Cauthon"]
   spec.email         = ["darren@cauthon.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Fast CI. Still a WIP.}
+  spec.summary       = %q{Fast CI. Still a WIP.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
