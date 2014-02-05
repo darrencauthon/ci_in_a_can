@@ -6,8 +6,14 @@ module CiInACan
   module Watcher
 
     def self.watch
+      working_location = File.expand_path(File.dirname(__FILE__))
+      working_location.gsub!('/lib/ci_in_a_can', '')
+      working_location += '/temp'
+      puts working_location
       listener = ::Listen.to('.', only: /\.json$/) do |modified, added, removed|
-        return unless added.count > 0
+        next unless added.count > 0
+        next if added.first.include? working_location
+        puts added.first
         json = File.read added.first
         data = JSON.parse(JSON.parse(json)['payload'])
         data['unique_location'] = UUID.new.generate
