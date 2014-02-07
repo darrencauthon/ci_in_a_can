@@ -5,6 +5,10 @@ module CiInACan
 
   module Watcher
 
+    def self.build_listener working_location
+      ::Listen.to(working_location, { only: /\.json$/ }, &build_callback)
+    end
+
     def self.watch working_location
       listener = build_listener working_location
       listener.start
