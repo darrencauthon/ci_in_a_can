@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "uuid"
   spec.add_runtime_dependency "listen"
   spec.add_runtime_dependency "octokit"
+  spec.add_runtime_dependency "daemons"
 end
