@@ -44,30 +44,47 @@ describe CiInACan::Watcher do
 
   describe "build a callback" do
 
+    let(:working_location) { Object.new }
+
     it "should return a Proc" do
-      CiInACan::Watcher.build_callback.is_a? Proc
+      CiInACan::Watcher.build_callback(nil).is_a? Proc
     end
 
     it "should the proc can take three arrays" do
-      CiInACan::Watcher.build_callback.call [], [], []
+      CiInACan::Watcher.build_callback(nil).call [], [], []
     end
 
     describe "when a file is added" do
 
-      it "should open the file, parse a build from it, and run it" do
+      let(:added_file) { Object.new }
+      let(:build)      { CiInACan::Build.new }
 
-        added_file = Object.new
+      before do
         content    = Object.new
-        build      = Object.new
 
         File.stubs(:read).with(added_file).returns content
 
         CiInACan::Build.stubs(:parse).with(content).returns build
 
+        CiInACan::Runner.stubs(:run).with build
+      end
+
+      it "should open the file, parse a build from it, and run it" do
         CiInACan::Runner.expects(:run).with build
+        CiInACan::Watcher.build_callback(nil).call [], [added_file], []
+      end
 
-        CiInACan::Watcher.build_callback.call [], [added_file], []
+      it "should assign the local location on the build" do
 
+        working_location = Object.new
+        CiInACan::Runner.stubs(:wl).returns working_location
+
+        CiInACan::Runner.expects(:run).with do |b|
+          b.local_location.must_be_same_as CiInACan::Runner.wl
+          true
+        end
+
+        CiInACan::Watcher.build_callback(working_location).call [], [added_file], []
       end
 
     end

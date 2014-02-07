@@ -5,7 +5,7 @@ module CiInACan
 
   module Watcher
 
-    def self.build_callback
+    def self.build_callback working_location
       Proc.new do |modified, added, removed|
         next unless added.count > 0
         #next if added.first.include? working_location
@@ -14,6 +14,7 @@ module CiInACan
         #data = JSON.parse(JSON.parse(json)['payload'])
         #data['unique_location'] = UUID.new.generate
         build = CiInACan::Build.parse content
+        build.local_location = working_location
         Runner.run build
       end
     end

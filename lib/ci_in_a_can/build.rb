@@ -2,7 +2,7 @@ module CiInACan
 
   class Build
 
-    attr_accessor :git_ssh
+    attr_accessor :git_ssh, :local_location
 
     def self.parse content
       data = JSON.parse content
