@@ -2,7 +2,7 @@ module CiInACan
 
   class Build
 
-    attr_accessor :git_ssh, :local_location
+    attr_accessor :git_ssh, :local_location, :repo
 
     def self.parse content
       data = JSON.parse content
@@ -12,6 +12,7 @@ module CiInACan
 
       build = self.new
       build.git_ssh = "git@github.com:#{splat[3]}/#{splat[4]}.git"
+      build.repo    = "#{splat[3]}/#{splat[4]}"
       build
     end
 
