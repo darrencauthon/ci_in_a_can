@@ -24,7 +24,6 @@ describe CiInACan::Watcher do
 
     end
 
-
   end
 
   describe "building a listener" do
