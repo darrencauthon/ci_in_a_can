@@ -23,7 +23,7 @@ module CiInACan
           next unless added.count > 0
 
           build = CiInACan::Build.parse File.read(added.first)
-          build.local_location = working_location
+          build.local_location = "#{working_location}/#{UUID.new.generate}"
 
           Runner.run build
         end

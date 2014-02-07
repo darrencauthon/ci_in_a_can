@@ -79,17 +79,31 @@ describe CiInACan::Watcher do
         CiInACan::Watcher.send(:build_callback, nil).call [], [added_file], []
       end
 
-      it "should assign the local location on the build" do
+      [:working_location, :random_string].to_objects {[
+        ["abc", "123"],
+        ["123", "abc"],
+      ]}.each do |test|
 
-        working_location = Object.new
-        CiInACan::Runner.stubs(:wl).returns working_location
+        describe "setting the local location" do
 
-        CiInACan::Runner.expects(:run).with do |b|
-          b.local_location.must_be_same_as CiInACan::Runner.wl
-          true
+          it "should assign the local location on the build" do
+
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+
+            CiInACan::Runner.expects(:run).with do |b|
+              b.local_location.must_equal "#{test.working_location}/#{test.random_string}"
+              true
+            end
+
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
         end
 
-        CiInACan::Watcher.send(:build_callback, working_location).call [], [added_file], []
       end
 
     end
