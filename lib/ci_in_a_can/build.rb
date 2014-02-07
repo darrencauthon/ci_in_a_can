@@ -6,6 +6,7 @@ module CiInACan
 
     def self.parse content
       data = JSON.parse content
+      data['payload'] = JSON.parse data['payload']
 
       splat = data['payload']['compare'].split('/')
 

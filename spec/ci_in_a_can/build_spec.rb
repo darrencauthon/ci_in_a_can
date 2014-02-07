@@ -13,7 +13,7 @@ describe CiInACan::Build do
         {
           payload: {
                      compare: test.compare
-                   }
+                   }.to_json
         }.to_json
       end
 
