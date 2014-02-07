@@ -9,19 +9,26 @@ module CiInACan
       build_listener(watching_location, working_location).start
     end
 
-    def self.build_callback working_location
-      Proc.new do |modified, added, removed|
-        next unless added.count > 0
-        content = File.read added.first
-        build = CiInACan::Build.parse content
-        build.local_location = working_location
-        Runner.run build
-      end
-    end
+    class << self
 
-    def self.build_listener watching_location, working_location
-      callback = build_callback working_location
-      ::Listen.to(watching_location, { only: /\.json$/ }, &callback)
+      private
+
+      def build_listener watching_location, working_location
+        callback = build_callback working_location
+        ::Listen.to(watching_location, { only: /\.json$/ }, &callback)
+      end
+
+      def build_callback working_location
+        Proc.new do |modified, added, removed|
+          next unless added.count > 0
+
+          build = CiInACan::Build.parse File.read(added.first)
+          build.local_location = working_location
+
+          Runner.run build
+        end
+      end
+
     end
 
   end

@@ -42,7 +42,7 @@ describe CiInACan::Watcher do
 
       ::Listen.expects(:to).with(watching_location, { only: /\.json$/ }, &callback)
 
-      CiInACan::Watcher.build_listener watching_location, working_location
+      CiInACan::Watcher.send(:build_listener, watching_location, working_location)
     end
 
   end
@@ -52,11 +52,11 @@ describe CiInACan::Watcher do
     let(:working_location) { Object.new }
 
     it "should return a Proc" do
-      CiInACan::Watcher.build_callback(nil).is_a? Proc
+      CiInACan::Watcher.send(:build_callback, nil).is_a? Proc
     end
 
     it "should the proc can take three arrays" do
-      CiInACan::Watcher.build_callback(nil).call [], [], []
+      CiInACan::Watcher.send(:build_callback, nil).call [], [], []
     end
 
     describe "when a file is added" do
@@ -76,7 +76,7 @@ describe CiInACan::Watcher do
 
       it "should open the file, parse a build from it, and run it" do
         CiInACan::Runner.expects(:run).with build
-        CiInACan::Watcher.build_callback(nil).call [], [added_file], []
+        CiInACan::Watcher.send(:build_callback, nil).call [], [added_file], []
       end
 
       it "should assign the local location on the build" do
@@ -89,7 +89,7 @@ describe CiInACan::Watcher do
           true
         end
 
-        CiInACan::Watcher.build_callback(working_location).call [], [added_file], []
+        CiInACan::Watcher.send(:build_callback, working_location).call [], [added_file], []
       end
 
     end
