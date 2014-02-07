@@ -4,12 +4,14 @@ describe CiInACan::Bash do
   
   describe "run" do
 
-    it "should run the command with open4" do
+    it "should run the command with system and return the result" do
         
-      command = Object.new
-      Open4.expects(:popen4).with command
+      expected_result = Object.new
+      command         = Object.new
 
-      CiInACan::Bash.run command
+      CiInACan::Bash.stubs(:system).with(command).returns expected_result
+
+      CiInACan::Bash.run(command).must_be_same_as expected_result
 
     end
 
