@@ -5,7 +5,6 @@ describe CiInACan::Github do
   describe "client" do
 
     it "should create an Octokit client with the access token" do
-      raise 'k'
       access_token = Object.new
       client       = Object.new
 
