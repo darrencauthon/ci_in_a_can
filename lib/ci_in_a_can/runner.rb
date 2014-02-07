@@ -4,7 +4,7 @@ module CiInACan
 
     def self.run build
 
-      CiInACan::Cloner.clone build
+      CiInACan::Cloner.clone_a_local_copy_for build
 
     end
 

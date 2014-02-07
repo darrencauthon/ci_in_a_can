@@ -7,11 +7,8 @@ describe CiInACan::Runner do
     let(:build) { Object.new }
 
     it "should clone the git repo" do
-
-      CiInACan::Cloner.expects(:clone).with build
-
+      CiInACan::Cloner.expects(:clone_a_local_copy_for).with build
       CiInACan::Runner.run build
-        
     end
 
   end
