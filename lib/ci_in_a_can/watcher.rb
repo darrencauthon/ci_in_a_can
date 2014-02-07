@@ -19,12 +19,13 @@ module CiInACan
       end
     end
 
-    def self.build_listener working_location
-      ::Listen.to(working_location, { only: /\.json$/ }, &build_callback)
+    def self.build_listener watching_location, working_location
+      callback = build_callback working_location
+      ::Listen.to(watching_location, { only: /\.json$/ }, &callback)
     end
 
-    def self.watch working_location
-      listener = build_listener working_location
+    def self.watch watching_location, working_location
+      listener = build_listener watching_location, working_location
       listener.start
       #working_location = File.expand_path(File.dirname(__FILE__))
       #working_location.gsub!('/lib/ci_in_a_can', '')
