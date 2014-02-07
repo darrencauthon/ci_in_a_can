@@ -44,6 +44,20 @@ describe CiInACan::TestRunner do
 
       end
 
+      describe "when two special commands exist" do
+
+        it "should cd into the local directory, run the commands, then run the default rake task" do
+          build.local_location = test.local_location
+
+          build.pre_test_commands = ["1", "2"]
+
+          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; 1; 2; bundle exec rake")
+
+          CiInACan::TestRunner.run_tests_for build
+        end
+
+      end
+
     end
 
   end

@@ -3,6 +3,11 @@ module CiInACan
   class Build
 
     attr_accessor :git_ssh, :local_location, :repo, :sha
+    attr_accessor :pre_test_commands
+
+    def initialize
+      self.pre_test_commands = []
+    end
 
     def self.parse content
       data = JSON.parse content
@@ -14,6 +19,7 @@ module CiInACan
       build.git_ssh = "git@github.com:#{splat[3]}/#{splat[4]}.git"
       build.repo    = "#{splat[3]}/#{splat[4]}"
       build.sha     = data['payload']['after']
+      build.pre_test_commands = []
       build
     end
 
