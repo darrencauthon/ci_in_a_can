@@ -42,4 +42,36 @@ describe CiInACan::Watcher do
 
   end
 
+  describe "build a callback" do
+
+    it "should return a Proc" do
+      CiInACan::Watcher.build_callback.is_a? Proc
+    end
+
+    it "should the proc can take three arrays" do
+      CiInACan::Watcher.build_callback.call [], [], []
+    end
+
+    describe "when a file is added" do
+
+      it "should open the file, parse a build from it, and run it" do
+
+        added_file = Object.new
+        content    = Object.new
+        build      = Object.new
+
+        File.stubs(:read).with(added_file).returns content
+
+        CiInACan::Build.stubs(:parse).with(content).returns build
+
+        CiInACan::Runner.expects(:run).with build
+
+        CiInACan::Watcher.build_callback.call [], [added_file], []
+
+      end
+
+    end
+
+  end
+
 end

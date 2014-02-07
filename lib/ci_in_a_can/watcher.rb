@@ -5,6 +5,19 @@ module CiInACan
 
   module Watcher
 
+    def self.build_callback
+      Proc.new do |modified, added, removed|
+        next unless added.count > 0
+        #next if added.first.include? working_location
+        #puts added.first
+        content = File.read added.first
+        #data = JSON.parse(JSON.parse(json)['payload'])
+        #data['unique_location'] = UUID.new.generate
+        build = CiInACan::Build.parse content
+        Runner.run build
+      end
+    end
+
     def self.build_listener working_location
       ::Listen.to(working_location, { only: /\.json$/ }, &build_callback)
     end
