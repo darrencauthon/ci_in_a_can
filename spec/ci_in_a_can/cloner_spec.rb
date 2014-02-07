@@ -11,7 +11,7 @@ describe CiInACan::Cloner do
 
       it "should run a bash command to clone the repo" do
 
-        CiInACan::Bash.expects(:run).with "git clone #{build.git_ssh} #{build.local_location}; cd #{build.local_location}; git checkout -b testing origin/#{build.sha}"
+        CiInACan::Bash.expects(:run).with "git clone #{build.git_ssh} #{build.local_location}; cd #{build.local_location}; git checkout #{build.sha}"
 
         CiInACan::Cloner.clone_a_local_copy_for build
 
