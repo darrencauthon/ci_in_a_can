@@ -29,6 +29,7 @@ describe CiInACan::Build do
       end
 
       it "should stamp the sha" do
+        raise 'k'
         build = CiInACan::Build.parse content
         build.sha.must_equal test.sha
       end
