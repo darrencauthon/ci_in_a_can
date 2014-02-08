@@ -20,7 +20,7 @@ describe CiInACan::TestRunner do
         it "should cd into the local directory and run the default rake task" do
           build.local_location = test.local_location
 
-          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; bundle exec rake")
+          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; bundle install; bundle exec rake")
 
           CiInACan::TestRunner.run_tests_for build
         end
@@ -51,7 +51,7 @@ describe CiInACan::TestRunner do
 
           build.pre_test_commands = ["1", "2"]
 
-          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; 1; 2; bundle exec rake")
+          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; bundle install; 1; 2; bundle exec rake")
 
           CiInACan::TestRunner.run_tests_for build
         end
