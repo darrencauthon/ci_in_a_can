@@ -18,7 +18,7 @@ module CiInACan
       build = self.new
       build.git_ssh = "git@github.com:#{splat[3]}/#{splat[4]}.git"
       build.repo    = "#{splat[3]}/#{splat[4]}"
-      build.sha     = data['payload']['after']
+      build.sha     = data['payload']['head_commit']['id']
       build.pre_test_commands = []
       build
     end

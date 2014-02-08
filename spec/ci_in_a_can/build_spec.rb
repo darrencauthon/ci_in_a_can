@@ -18,8 +18,8 @@ describe CiInACan::Build do
       let(:content) do
         {
           payload: {
-                     compare: test.compare,
-                     after:   test.sha
+                     compare:     test.compare,
+                     head_commit: { id: test.sha }
                    }.to_json
         }.to_json
       end
