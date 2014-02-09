@@ -1,6 +1,15 @@
 #!/usr/bin/env ruby
 
+def web_file
+  <<EOF
 require 'ci_in_a_can'
+
+CiInACan::App.jobs_location = File.expand_path(File.dirname(__FILE__) + '/../jobs')
+
+use CiInACan::App
+run Sinatra::Application
+EOF
+end
 
 def service_file
   <<EOF
@@ -37,5 +46,6 @@ when 'create'
 
   directories_to_create.each { |d| Dir.mkdir(d) unless File.exists?(d) }
   File.open("#{root}/service/service.rb", 'w') { |f| f.write service_file }
+  File.open("#{root}/web/config.ru", 'w')      { |f| f.write web_file     }
 
 end
