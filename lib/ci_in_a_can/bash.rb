@@ -1,16 +1,12 @@
 module CiInACan
 
-  class Bash
-
-    attr_accessor :exit_code, :output
+  module Bash
 
     def self.run command
-
-      result = self.new
+      result = CiInACan::BashResult.new
       result.output    = backtick command
       result.exit_code = the_exit_code
       result
-
     end
 
     def self.backtick command

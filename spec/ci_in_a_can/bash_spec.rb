@@ -13,9 +13,9 @@ describe CiInACan::Bash do
       CiInACan::Bash.stubs(:the_exit_code).returns exit_code
     end
 
-    it "should return a Bash" do
+    it "should return a BashResult" do
       result = CiInACan::Bash.run command
-      result.is_a?(CiInACan::Bash).must_equal true
+      result.is_a?(CiInACan::BashResult).must_equal true
     end
 
     it "should return the output" do
