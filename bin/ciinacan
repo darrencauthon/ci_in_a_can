@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'ci_in_a_can'
+
+puts ARGV[0]
+puts ARGV[1]
+
+puts Dir.pwd
+
+case ARGV[0].to_s.downcase
+when 'create'
+  directory = "#{Dir.pwd}/#{ARGV[1]}"
+  Dir.mkdir(directory) unless File.exists?(directory)
+end
