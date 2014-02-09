@@ -2,6 +2,27 @@
 
 require 'ci_in_a_can'
 
+def service_file
+  <<EOF
+require 'ci_in_a_can'
+require 'daemons'
+
+this_directory = File.dirname(File.expand_path(__FILE__))
+::Daemons.run_proc('server.rb') do
+  loop do
+    options = {
+                access_token:      ENV['GITHUB_AUTH_TOKEN'],
+                working_location:  this_directory + "/repos",
+                watching_location: this_directory + "/jobs"
+              }
+    CiInACan::Daemon.start options
+    sleep
+  end
+end
+EOF
+end
+
+
 puts ARGV[0]
 puts ARGV[1]
 
@@ -9,6 +30,12 @@ puts Dir.pwd
 
 case ARGV[0].to_s.downcase
 when 'create'
-  directory = "#{Dir.pwd}/#{ARGV[1]}"
-  Dir.mkdir(directory) unless File.exists?(directory)
+
+  root = "#{Dir.pwd}/#{ARGV[1]}"
+
+  directories_to_create = [root, "#{root}/jobs", "#{root}/repos", "#{root}/web", "#{root}/service"]
+
+  directories_to_create.each { |d| Dir.mkdir(d) unless File.exists?(d) }
+  File.open("#{root}/service/service.rb", 'w') { |f| f.write service_file }
+
 end
