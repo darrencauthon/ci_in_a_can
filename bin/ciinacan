@@ -16,7 +16,7 @@ def service_file
 require 'ci_in_a_can'
 require 'daemons'
 
-this_directory = File.dirname(File.expand_path(__FILE__))
+this_directory = File.expand_path(File.dirname(__FILE__) + '/../')
 ::Daemons.run_proc('server.rb') do
   loop do
     options = {
