@@ -10,19 +10,25 @@ module CiInACan
       attr_accessor :jobs_location
     end
 
-    get '/start' do
-      write_a_file_with params
+    get '/' do
+<<EOF
+<html>
+  <head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <table class="table table-bordered">
+      <tbody>
+      </tbody>
+    </table>
+  </body>
+</html>
+EOF
     end
 
     post '/start' do
-      write_a_file_with params
-    end
-
-    put '/start' do
-      write_a_file_with params
-    end
-
-    delete '/start' do
       write_a_file_with params
     end
 
