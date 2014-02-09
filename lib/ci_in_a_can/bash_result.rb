@@ -4,7 +4,7 @@ module CiInACan
 
     attr_accessor :exit_code, :output
 
-    def success
+    def successful
       exit_code == 0
     end
 
