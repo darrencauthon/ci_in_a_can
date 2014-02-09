@@ -61,7 +61,7 @@ when 'create'
 
   root = "#{Dir.pwd}/#{ARGV[1]}"
 
-  directories_to_create = [root, "#{root}/jobs", "#{root}/repos", "#{root}/web", "#{root}/service"]
+  directories_to_create = [root, "#{root}/jobs", "#{root}/repos", "#{root}/web", "#{root}/service", "#{root}/results"]
 
   directories_to_create.each { |d| Dir.mkdir(d) unless File.exists?(d) }
 
