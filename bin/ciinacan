@@ -1,5 +1,24 @@
 #!/usr/bin/env ruby
 
+def rake_file
+<<EOF
+#!/usr/bin/env rake
+
+desc "Start"
+task :start do
+  location = File.expand_path(File.dirname(__FILE__))
+  system "ruby service/service.rb start"
+  system "cd web; rackup -p 80"
+end
+
+desc "Stop"
+task :stop do
+  location = File.expand_path(File.dirname(__FILE__))
+  system "ruby service/service.rb stop"
+end
+EOF
+end
+
 def web_file
   <<EOF
 require 'ci_in_a_can'
@@ -45,6 +64,8 @@ when 'create'
   directories_to_create = [root, "#{root}/jobs", "#{root}/repos", "#{root}/web", "#{root}/service"]
 
   directories_to_create.each { |d| Dir.mkdir(d) unless File.exists?(d) }
+
+  File.open("#{root}/Rakefile", 'w')           { |f| f.write rake_file    }
   File.open("#{root}/service/service.rb", 'w') { |f| f.write service_file }
   File.open("#{root}/web/config.ru", 'w')      { |f| f.write web_file     }
 
