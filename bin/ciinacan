@@ -36,6 +36,11 @@ require 'ci_in_a_can'
 require 'daemons'
 
 this_directory = File.expand_path(File.dirname(__FILE__) + '/../')
+
+eval("def CiInACan.results_location
+  '\#{this_directory}' + '/results'
+end")
+
 ::Daemons.run_proc('server.rb') do
   loop do
     options = {
