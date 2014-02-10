@@ -18,6 +18,11 @@ module CiInACan
         client.create_status build.repo, build.sha, 'pending'
       end
 
+      def report_complete_status_for build, test_result
+        return nil unless client
+        client.create_status build.repo, build.sha, (test_result.passed ? 'success' : 'failure')
+      end
+
     end
 
   end

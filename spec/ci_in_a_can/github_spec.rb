@@ -59,4 +59,59 @@ describe CiInACan::Github do
 
   end
 
+  describe "report_complete_status" do
+
+    describe "a successful test result" do
+
+      let(:test_result) do
+        test_result = Object.new
+        test_result.stubs(:passed).returns true
+        test_result
+      end
+
+      it "should report a success status to the github client" do
+        build = CiInACan::Build.new
+        build.sha  = Object.new
+        build.repo = Object.new
+
+        client = Object.new
+        CiInACan::Github.stubs(:client).returns client
+
+        client.expects(:create_status).with build.repo, build.sha, 'success'
+
+        CiInACan::Github.report_complete_status_for build, test_result
+      end
+
+    end
+
+    describe "a failed test result" do
+
+      let(:test_result) do
+        test_result = Object.new
+        test_result.stubs(:passed).returns false
+        test_result
+      end
+
+      it "should report a success status to the github client" do
+        build = CiInACan::Build.new
+        build.sha  = Object.new
+        build.repo = Object.new
+
+        client = Object.new
+        CiInACan::Github.stubs(:client).returns client
+
+        client.expects(:create_status).with build.repo, build.sha, 'failure'
+
+        CiInACan::Github.report_complete_status_for build, test_result
+      end
+
+    end
+
+    it "should not fail if there is no github client" do
+      CiInACan::Github.stubs(:client).returns nil
+      CiInACan::Github.report_complete_status_for CiInACan::Build.new, Object.new
+    end
+
+  end
+
 end
