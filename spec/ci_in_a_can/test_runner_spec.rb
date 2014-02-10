@@ -32,6 +32,13 @@ describe CiInACan::TestRunner do
           result.is_a?(CiInACan::TestResult).must_equal true
         end
 
+        it "should pass the output value from the bash result" do
+          output = Object.new
+          bash_result.stubs(:output).returns output
+          result = CiInACan::TestRunner.run_tests_for build
+          result.output.must_be_same_as output
+        end
+
         it "should return a passed test result if the command returns true" do
           bash_result.stubs(:successful).returns true
           result = CiInACan::TestRunner.run_tests_for build

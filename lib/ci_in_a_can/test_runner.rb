@@ -8,6 +8,7 @@ module CiInACan
 
       bash_result = CiInACan::Bash.run commands.join('; ')
       test_result.passed = bash_result.successful
+      test_result.output = bash_result.output
       test_result
     end
   end
