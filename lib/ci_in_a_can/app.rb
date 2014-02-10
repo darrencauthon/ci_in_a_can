@@ -10,6 +10,10 @@ module CiInACan
       attr_accessor :jobs_location
     end
 
+    get '/test_result/:id' do
+      CiInACan::TestResult.find(params[:id]).to_json
+    end
+
     get '/' do
 <<EOF
 <html>
