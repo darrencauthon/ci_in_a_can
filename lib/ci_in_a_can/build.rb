@@ -1,21 +1,18 @@
 module CiInACan
 
   class Build
+    params_constructor
 
     attr_accessor :git_ssh, :local_location, :repo, :sha
     attr_accessor :id
 
     def self.parse content
       payload = extract_payload_from content
-
       project = extract_repo_from payload
-      sha     = extract_sha_from payload
 
-      build = self.new
-      build.git_ssh = "git@github.com:#{project}.git"
-      build.repo    = project
-      build.sha     = sha
-      build
+      self.new(git_ssh: "git@github.com:#{project}.git",
+               repo:    project,
+               sha:     extract_sha_from(payload))
     end
 
     def commands
