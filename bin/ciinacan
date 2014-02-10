@@ -44,7 +44,8 @@ eval("CiInACan.results_location = '\#{this_directory}' + '/results'")
     options = {
                 access_token:      ENV['GITHUB_AUTH_TOKEN'],
                 working_location:  this_directory + "/repos",
-                watching_location: this_directory + "/jobs"
+                watching_location: this_directory + "/jobs",
+                site_url:          ENV['SITE_URL']
               }
     CiInACan::Daemon.start options
     sleep
