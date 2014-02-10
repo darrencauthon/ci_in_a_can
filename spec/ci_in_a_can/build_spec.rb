@@ -9,37 +9,17 @@ describe CiInACan::Build do
     result[1].must_equal 'bundle exec rake'
   end
 
-  [:compare, :sha, :git_ssh, :repo].to_objects {[
-    ["https://github.com/darrencauthon/ci_in_a_can/commit/b1c5f9c9588f", "qwe", "git@github.com:darrencauthon/ci_in_a_can.git", "darrencauthon/ci_in_a_can"],
-    ["https://github.com/abc/123/commit/b1c5f9c9588f",                   "uio", "git@github.com:abc/123.git",                   "abc/123"]
-  ]}.each do |test|
+  describe "parse" do
 
-    describe "parse" do
+    it "should return the result of the Github parser" do
+      content = Object.new
+      parser  = Object.new
+      build   = Object.new
 
-      let(:content) do
-        {
-          payload: {
-                     compare:     test.compare,
-                     head_commit: { id: test.sha }
-                   }.to_json
-        }.to_json
-      end
+      parser.stubs(:parse).with(content).returns build
+      CiInACan::GithubBuildParser.stubs(:new).returns parser
 
-      it "should convert the http to a git ssh" do
-        build = CiInACan::Build.parse content
-        build.git_ssh.must_equal test.git_ssh
-      end
-
-      it "should return the repo" do
-        build = CiInACan::Build.parse content
-        build.repo.must_equal test.repo
-      end
-
-      it "should stamp the sha" do
-        build = CiInACan::Build.parse content
-        build.sha.must_equal test.sha
-      end
-
+      CiInACan::Build.parse(content).must_be_same_as build
     end
 
   end
