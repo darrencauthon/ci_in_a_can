@@ -8,12 +8,12 @@ module CiInACan
     def self.parse content
       payload = extract_payload_from content
 
-      username, project_name = get_username_and_project_name_from payload
-      sha = extract_sha_from payload
+      project = extract_repo_from payload
+      sha     = extract_sha_from payload
 
       build = self.new
-      build.git_ssh = "git@github.com:#{username}/#{project_name}.git"
-      build.repo    = "#{username}/#{project_name}"
+      build.git_ssh = "git@github.com:#{project}.git"
+      build.repo    = project
       build.sha     = sha
       build
     end
@@ -23,6 +23,11 @@ module CiInACan
     end
 
     private
+
+    def self.extract_repo_from payload
+      username, project_name = get_username_and_project_name_from payload
+      "#{username}/#{project_name}"
+    end
 
     def self.extract_payload_from content
       data = JSON.parse content
