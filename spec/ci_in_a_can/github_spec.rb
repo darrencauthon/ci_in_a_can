@@ -20,16 +20,18 @@ describe CiInACan::Github do
 
     end
 
-    describe "when an access token was not provided" do
+    [nil, ''].each do |access_token|
 
-      let(:access_token) { nil }
+      describe "when an access token was not provided" do
 
-      it "should return nothing" do
-        CiInACan::Github.access_token = access_token
+        it "should return nothing" do
+          CiInACan::Github.access_token = access_token
 
-        Octokit::Client.expects(:new).never
+          Octokit::Client.expects(:new).never
 
-        CiInACan::Github.client.nil?.must_equal true
+          CiInACan::Github.client.nil?.must_equal true
+        end
+
       end
 
     end
