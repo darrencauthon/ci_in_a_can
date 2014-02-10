@@ -28,7 +28,7 @@ module CiInACan
 EOF
     end
 
-    post '/start' do
+    post '/' do
       write_a_file_with params
     end
 
