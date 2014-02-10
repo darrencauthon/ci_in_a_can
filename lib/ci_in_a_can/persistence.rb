@@ -17,7 +17,7 @@ module CiInACan
     private
 
     def self.store_for type
-      YAML::Store.new("#{type}.yml")
+      YAML::Store.new("#{CiInACan.results_location}/#{type}.yml")
     end
 
   end

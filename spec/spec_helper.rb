@@ -5,3 +5,7 @@ require 'minitest/pride'
 require 'subtle'
 require 'contrast'
 require 'mocha/setup'
+
+def CiInACan.results_location
+  File.expand_path(File.dirname(__FILE__) + '/temp')
+end
