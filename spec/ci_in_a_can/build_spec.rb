@@ -2,8 +2,8 @@ require_relative '../spec_helper'
 
 describe CiInACan::Build do
 
-  it "should default pre_test_commands to an empty array" do
-    result = CiInACan::Build.new.pre_test_commands
+  it "should default commands to an empty array" do
+    result = CiInACan::Build.new.commands
     result.count.must_equal 0
     result.is_a?(Array).must_equal true
   end

@@ -65,7 +65,7 @@ describe CiInACan::TestRunner do
         it "should cd into the local directory, run the commands, then run the default rake task" do
           build.local_location = test.local_location
 
-          build.pre_test_commands = ["1", "2"]
+          build.commands = ["1", "2"]
 
           CiInACan::Bash.expects(:run).with("cd #{test.local_location}; bundle install; 1; 2; bundle exec rake").returns bash_result
 
