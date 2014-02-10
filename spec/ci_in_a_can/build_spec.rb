@@ -2,6 +2,13 @@ require_relative '../spec_helper'
 
 describe CiInACan::Build do
 
+  it "should default commands to the basic ruby conventions" do
+    result = CiInACan::Build.new.commands
+    result.count.must_equal 2
+    result[0].must_equal 'bundle install'
+    result[1].must_equal 'bundle exec rake'
+  end
+
   [:compare, :sha, :git_ssh, :repo].to_objects {[
     ["https://github.com/darrencauthon/ci_in_a_can/commit/b1c5f9c9588f", "qwe", "git@github.com:darrencauthon/ci_in_a_can.git", "darrencauthon/ci_in_a_can"],
     ["https://github.com/abc/123/commit/b1c5f9c9588f",                   "uio", "git@github.com:abc/123.git",                   "abc/123"]
@@ -12,8 +19,8 @@ describe CiInACan::Build do
       let(:content) do
         {
           payload: {
-                     compare: test.compare,
-                     after:   test.sha
+                     compare:     test.compare,
+                     head_commit: { id: test.sha }
                    }.to_json
         }.to_json
       end

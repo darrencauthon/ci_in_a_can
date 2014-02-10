@@ -4,9 +4,10 @@ describe CiInACan::Runner do
 
   describe "run" do
 
-    let(:build) { Object.new }
+    let(:build)  { CiInACan::Build.new }
 
     before do
+      CiInACan::Github.stubs(:report_pending_status_for)
       CiInACan::Cloner.stubs(:clone_a_local_copy_for)
       CiInACan::TestRunner.stubs(:run_tests_for)
       CiInACan::TestResultNotifier.stubs(:send_for)
@@ -35,6 +36,15 @@ describe CiInACan::Runner do
       CiInACan::TestRunner.stubs(:run_tests_for).with(build).returns test_results
 
       CiInACan::TestResultNotifier.expects(:send_for).with build, test_results
+
+      CiInACan::Runner.run build
+    end
+
+    it "should send a pending notification to github" do
+
+      build.repo = Object.new
+      build.sha  = Object.new
+      CiInACan::Github.expects(:report_pending_status_for).with build
 
       CiInACan::Runner.run build
     end

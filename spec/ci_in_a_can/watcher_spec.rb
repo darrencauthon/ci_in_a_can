@@ -86,7 +86,7 @@ describe CiInACan::Watcher do
 
         describe "setting the local location" do
 
-          it "should assign the local location on the build" do
+          it "should assign the local location on the build, and the id" do
 
             CiInACan::Runner.stubs(:wl).returns test.working_location
 
@@ -96,6 +96,7 @@ describe CiInACan::Watcher do
 
             CiInACan::Runner.expects(:run).with do |b|
               b.local_location.must_equal "#{test.working_location}/#{test.random_string}"
+              b.id.must_equal test.random_string
               true
             end
 

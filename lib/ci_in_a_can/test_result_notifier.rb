@@ -1,7 +1,7 @@
 module CiInACan
   module TestResultNotifier
     def self.send_for build, test_result
-      CiInACan::Github.client.create_status(build.repo, build.sha, test_result.passed ? "success" : "failure")
+      CiInACan::Github.report_complete_status_for build, test_result
     end
   end
 end
