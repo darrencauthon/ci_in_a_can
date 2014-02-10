@@ -36,4 +36,27 @@ describe CiInACan::Github do
 
   end
 
+  describe "report_pending_status" do
+
+    it "should report a pending status to the github client" do
+
+      build = CiInACan::Build.new
+      build.sha  = Object.new
+      build.repo = Object.new
+
+      client = Object.new
+      CiInACan::Github.stubs(:client).returns client
+
+      client.expects(:create_status).with build.repo, build.sha, 'pending'
+
+      CiInACan::Github.report_pending_status_for build
+    end
+
+    it "should not fail if there is no github client" do
+      CiInACan::Github.stubs(:client).returns nil
+      CiInACan::Github.report_pending_status_for CiInACan::Build.new
+    end
+
+  end
+
 end

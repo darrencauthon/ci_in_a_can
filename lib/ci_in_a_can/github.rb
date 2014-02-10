@@ -13,6 +13,11 @@ module CiInACan
         Octokit::Client.new access_token: access_token
       end
 
+      def report_pending_status_for build
+        return nil unless client
+        client.create_status build.repo, build.sha, 'pending'
+      end
+
     end
 
   end
