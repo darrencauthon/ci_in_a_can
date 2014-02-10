@@ -3,8 +3,8 @@ module CiInACan
   class Build
     params_constructor
 
-    attr_accessor :git_ssh, :local_location, :repo, :sha
-    attr_accessor :id
+    attr_accessor :id, :git_ssh, :sha,
+                  :local_location, :repo
 
     def self.parse content
       GithubBuildParser.new.parse content
