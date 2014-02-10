@@ -4,6 +4,7 @@ module CiInACan
 
     attr_accessor :git_ssh, :local_location, :repo, :sha
     attr_accessor :pre_test_commands
+    attr_accessor :id
 
     def initialize
       self.pre_test_commands = []
