@@ -2,10 +2,11 @@ require_relative '../spec_helper'
 
 describe CiInACan::Build do
 
-  it "should default commands to an empty array" do
+  it "should default commands to the basic ruby conventions" do
     result = CiInACan::Build.new.commands
-    result.count.must_equal 0
-    result.is_a?(Array).must_equal true
+    result.count.must_equal 2
+    result[0].must_equal 'bundle install'
+    result[1].must_equal 'bundle exec rake'
   end
 
   [:compare, :sha, :git_ssh, :repo].to_objects {[
