@@ -7,6 +7,7 @@ module CiInACan
 
   class << self
     attr_accessor :results_location
+    attr_accessor :site_url
   end
 
 end
