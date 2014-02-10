@@ -32,6 +32,13 @@ describe CiInACan::TestRunner do
           result.is_a?(CiInACan::TestResult).must_equal true
         end
 
+        it "should use the create method to create the TestResult" do
+
+          CiInACan::TestResult.expects(:new).never
+          CiInACan::TestResult.expects(:create).with { |v| true }.once
+          CiInACan::TestRunner.run_tests_for build
+        end
+
         it "should pass the output value from the bash result" do
           output = Object.new
           bash_result.stubs(:output).returns output
