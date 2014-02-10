@@ -5,7 +5,9 @@ module CiInACan
       commands = ["cd #{build.local_location}", "bundle install"]
       build.pre_test_commands.each { |c| commands << c }
       commands << "bundle exec rake"
-      test_result.passed = CiInACan::Bash.run commands.join('; ')
+
+      bash_result = CiInACan::Bash.run commands.join('; ')
+      test_result.passed = bash_result.successful
       test_result
     end
   end
