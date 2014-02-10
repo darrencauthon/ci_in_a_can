@@ -6,7 +6,7 @@ Dir[File.dirname(__FILE__) + '/ci_in_a_can/*.rb'].each { |file| require file }
 module CiInACan
 
   def self.results_location
-    File.expand_path(File.dirname(__FILE__) + '/../../results')
+    File.expand_path("#{Dir.pwd}/../results")
   end
 
 end
