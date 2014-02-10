@@ -21,6 +21,7 @@ describe CiInACan::TestRunner do
 
         before do
           build.stubs(:local_location).returns test.local_location
+          build.stubs(:commands).returns []
         end
 
         it "should cd into the local directory and run the default rake task" do
@@ -70,7 +71,7 @@ describe CiInACan::TestRunner do
         end
 
         it "should cd into the local directory, run the commands, then run the default rake task" do
-          build.commands = ["1", "2"]
+          build.stubs(:commands).returns ["1", "2"]
 
           CiInACan::Bash.expects(:run).with("cd #{test.local_location}; 1; 2").returns bash_result
 
