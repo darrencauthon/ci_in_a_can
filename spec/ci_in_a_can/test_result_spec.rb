@@ -6,9 +6,7 @@ describe CiInACan::TestRunner do
 
     it "should store the result" do
 
-      values = { passed: true, output: "some output" }
-
-      original_test_result  = CiInACan::TestResult.create values
+      original_test_result  = CiInACan::TestResult.create({})
       retrieved_test_result = CiInACan::TestResult.find original_test_result.id
 
       original_test_result.id.must_equal retrieved_test_result.id
@@ -22,7 +20,7 @@ describe CiInACan::TestRunner do
       UUID.stubs(:new).returns uuid
       uuid.expects(:generate).returns id
 
-      test_result  = CiInACan::TestResult.create({})
+      test_result = CiInACan::TestResult.create({})
 
       test_result.id.must_be_same_as id
     end
