@@ -5,11 +5,9 @@ describe CiInACan::Runner do
   describe "run" do
 
     let(:build)  { CiInACan::Build.new }
-    let(:client) { Object.new }
 
     before do
-      client.stubs(:create_status)
-      CiInACan::Github.stubs(:client).returns client
+      CiInACan::Github.stubs(:report_pending_status_for)
       CiInACan::Cloner.stubs(:clone_a_local_copy_for)
       CiInACan::TestRunner.stubs(:run_tests_for)
       CiInACan::TestResultNotifier.stubs(:send_for)
@@ -46,7 +44,7 @@ describe CiInACan::Runner do
 
       build.repo = Object.new
       build.sha  = Object.new
-      client.expects(:create_status).with build.repo, build.sha, 'pending'
+      CiInACan::Github.expects(:report_pending_status_for).with build
 
       CiInACan::Runner.run build
     end
