@@ -19,10 +19,13 @@ describe CiInACan::TestRunner do
 
       describe "when no special commands exist" do
 
-        it "should cd into the local directory and run the default rake task" do
-          build.local_location = test.local_location
+        before do
+          build.stubs(:local_location).returns test.local_location
+        end
 
-          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; bundle install; bundle exec rake").returns bash_result
+        it "should cd into the local directory and run the default rake task" do
+
+          CiInACan::Bash.expects(:run).with("cd #{test.local_location}").returns bash_result
 
           CiInACan::TestRunner.run_tests_for build
         end
@@ -62,12 +65,14 @@ describe CiInACan::TestRunner do
 
       describe "when two special commands exist" do
 
-        it "should cd into the local directory, run the commands, then run the default rake task" do
-          build.local_location = test.local_location
+        before do
+          build.stubs(:local_location).returns test.local_location
+        end
 
+        it "should cd into the local directory, run the commands, then run the default rake task" do
           build.commands = ["1", "2"]
 
-          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; bundle install; 1; 2; bundle exec rake").returns bash_result
+          CiInACan::Bash.expects(:run).with("cd #{test.local_location}; 1; 2").returns bash_result
 
           CiInACan::TestRunner.run_tests_for build
         end
