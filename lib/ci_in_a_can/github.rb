@@ -20,7 +20,7 @@ module CiInACan
 
       def report_complete_status_for build, test_result
         return nil unless client
-        client.create_status build.repo, build.sha, (test_result.passed ? 'success' : 'failure')
+        client.create_status(build.repo, build.sha, (test_result.passed ? 'success' : 'failure'), { target_url: "#{CiInACan.site_url}/test_result/#{test_result.id}" } )
       end
 
     end
