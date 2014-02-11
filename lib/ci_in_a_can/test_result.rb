@@ -18,6 +18,10 @@ module CiInACan
       CiInACan::Persistence.find PERSISTENCE_TYPE, id
     end
 
+    def to_json
+      { id: id, passed: passed, output: output }.to_json
+    end
+
     private
 
     def self.create_the_test_result_from values
