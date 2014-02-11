@@ -23,7 +23,10 @@ def web_file
   <<EOF
 require 'ci_in_a_can'
 
-CiInACan::App.jobs_location = File.expand_path(File.dirname(__FILE__) + '/../jobs')
+this_directory = File.expand_path(File.dirname(__FILE__) + '/../')
+
+eval("CiInACan::App.jobs_location = '\#{this_directory}' + '/jobs'")
+eval("CiInACan.results_location = '\#{this_directory}' + '/results'")
 
 use CiInACan::App
 run Sinatra::Application
