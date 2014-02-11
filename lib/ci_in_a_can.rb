@@ -1,3 +1,5 @@
+require 'json'
+require 'uuid'
 require 'subtle'
 
 require_relative "ci_in_a_can/version"

@@ -1,6 +1,4 @@
 require 'sinatra/base'
-require 'json'
-require 'uuid'
 
 module CiInACan
 

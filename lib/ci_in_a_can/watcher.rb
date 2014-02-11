@@ -1,5 +1,4 @@
 require 'listen'
-require 'json'
 
 module CiInACan
 

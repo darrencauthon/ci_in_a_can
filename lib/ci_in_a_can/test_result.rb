@@ -1,5 +1,3 @@
-require 'subtle'
-
 module CiInACan
   class TestResult
 
