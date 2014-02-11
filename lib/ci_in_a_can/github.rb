@@ -28,7 +28,11 @@ module CiInACan
     private
 
     def self.target_url_for test_result
-      "#{CiInACan.site_url}/test_result/#{test_result.id}"
+      if test_result.passed
+        "http://www.youtube.com/watch?v=uFjmYcwjgV8"
+      else
+        "#{CiInACan.site_url}/test_result/#{test_result.id}"
+      end
     end
 
     def self.complete_status_from test_result
