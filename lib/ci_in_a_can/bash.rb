@@ -3,10 +3,8 @@ module CiInACan
   module Bash
 
     def self.run command
-      result = CiInACan::BashResult.new
-      result.output    = backtick command
-      result.exit_code = the_exit_code
-      result
+      CiInACan::BashResult.new(output:    backtick(command),
+                               exit_code: the_exit_code)
     end
 
     def self.backtick command
