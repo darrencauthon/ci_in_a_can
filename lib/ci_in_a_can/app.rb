@@ -9,7 +9,6 @@ module CiInACan
     end
 
     get '/test_result/:id' do
-      CiInACan.results_location = '/Users/darrencauthon/desktop/ci_in_a_can/spec/temp'
       CiInACan::TestResult.find(params[:id]).to_json
     end
 
