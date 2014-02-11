@@ -19,15 +19,20 @@ module CiInACan
       end
 
       def build_callback working_location
-        Proc.new do |modified, added, removed|
-          next unless added.count > 0
+        Proc.new do |_, new_files, _|
+          next unless new_files.count > 0
 
-          build = CiInACan::Build.parse File.read(added.first)
-          build.id = UUID.new.generate
-          build.local_location = "#{working_location}/#{build.id}"
+          build = create_a_build_for(new_files.first, working_location)
 
           Runner.run build
         end
+      end
+
+      def create_a_build_for file, working_location
+        build = CiInACan::Build.parse File.read(file)
+        build.id = UUID.new.generate
+        build.local_location = "#{working_location}/#{build.id}"
+        build
       end
 
     end
