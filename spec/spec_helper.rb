@@ -4,6 +4,7 @@ require 'minitest/spec'
 require 'minitest/pride'
 require 'subtle'
 require 'contrast'
+require 'timecop'
 require 'mocha/setup'
 
 def CiInACan.results_location
