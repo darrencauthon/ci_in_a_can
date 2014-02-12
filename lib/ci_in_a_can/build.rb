@@ -1,10 +1,12 @@
 module CiInACan
 
   class Build
-    params_constructor
+
+    params_constructor { @created_at = Time.now }
 
     attr_accessor :id, :git_ssh, :sha,
-                  :local_location, :repo
+                  :local_location, :repo,
+                  :created_at
 
     def self.parse content
       GithubBuildParser.new.parse content

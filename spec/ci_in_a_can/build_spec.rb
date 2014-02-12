@@ -2,6 +2,16 @@ require_relative '../spec_helper'
 
 describe CiInACan::Build do
 
+  after do
+    Timecop.return
+  end
+
+  it "should default created_at to the current date" do
+    now = Time.now
+    ::Timecop.freeze now
+    CiInACan::Build.new.created_at.must_equal now
+  end
+
   it "should default commands to the basic ruby conventions" do
     result = CiInACan::Build.new.commands
     result.count.must_equal 2
