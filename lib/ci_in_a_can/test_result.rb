@@ -1,9 +1,13 @@
+require 'subtle'
+
 module CiInACan
   class TestResult
 
     PERSISTENCE_TYPE = 'test_result'
 
-    params_constructor { @created_at = Time.now }
+    params_constructor do
+      @created_at = Time.now unless @created_at
+    end
 
     attr_accessor :id
     attr_accessor :passed, :output
@@ -20,7 +24,12 @@ module CiInACan
     end
 
     def to_json
-      { id: id, passed: passed, output: output }.to_json
+      { 
+        id:         id, 
+        passed:     passed, 
+        output:     output,
+        created_at: created_at
+      }.to_json
     end
 
     private

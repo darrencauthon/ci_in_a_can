@@ -10,6 +10,12 @@ describe CiInACan::TestRunner do
     CiInACan::TestResult.new.created_at.must_equal now
   end
 
+  it "should allow the created_at to be set" do
+    now = Object.new
+    test_result = CiInACan::TestResult.new(created_at: now)
+    test_result.created_at.must_be_same_as now
+  end
+
   describe "create" do
     it "should set a unique id" do
       id   = Object.new
@@ -64,6 +70,25 @@ describe CiInACan::TestRunner do
 
         original_test_result.id.must_equal retrieved_test_result.id
 
+      end
+
+    end
+
+    describe "to_json" do
+
+      let(:fields) do
+        [:id, :passed, :output, :created_at]
+      end
+
+      it "should return json that contains the values" do
+        uuid = ::UUID.new
+        values = fields.reduce({}) { |t, i| t[i] = uuid.generate; t }
+
+        test_result = CiInACan::TestResult.new values
+
+        json = JSON.parse(test_result.to_json)
+
+        fields.each { |f| json[f.to_s].must_equal values[f] }
       end
 
     end
