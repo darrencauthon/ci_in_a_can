@@ -3,10 +3,11 @@ module CiInACan
 
     PERSISTENCE_TYPE = 'test_result'
 
-    params_constructor
+    params_constructor { @created_at = Time.now }
 
     attr_accessor :id
     attr_accessor :passed, :output
+    attr_accessor :created_at
 
     def self.create values
       test_result = create_the_test_result_from values

@@ -2,6 +2,14 @@ require_relative '../spec_helper'
 
 describe CiInACan::TestRunner do
 
+  after { ::Timecop.return }
+
+  it "should default created_at to now" do
+    now = Time.now
+    ::Timecop.freeze now
+    CiInACan::TestResult.new.created_at.must_equal now
+  end
+
   describe "create" do
     it "should set a unique id" do
       id   = Object.new
