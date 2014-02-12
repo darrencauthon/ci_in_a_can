@@ -2,7 +2,9 @@ module CiInACan
 
   class Build
 
-    params_constructor { @created_at = Time.now }
+    params_constructor do
+      @created_at = Time.now unless @created_at
+    end
 
     attr_accessor :id, :git_ssh, :sha,
                   :local_location, :repo,

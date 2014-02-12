@@ -12,6 +12,12 @@ describe CiInACan::Build do
     CiInACan::Build.new.created_at.must_equal now
   end
 
+  it "should allow the created_at to be set" do
+    now = Object.new
+    build = CiInACan::Build.new(created_at: now)
+    build.created_at.must_be_same_as now
+  end
+
   it "should default commands to the basic ruby conventions" do
     result = CiInACan::Build.new.commands
     result.count.must_equal 2
