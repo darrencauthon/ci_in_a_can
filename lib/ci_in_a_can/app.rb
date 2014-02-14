@@ -9,7 +9,7 @@ module CiInACan
     end
 
     get '/test_result/:id' do
-      test_result = CiInACan::TestResult.find(params[:id]).to_json
+      test_result = CiInACan::TestResult.find(params[:id])
 
       CiInACan::WebContent.full_page_of(
 <<EOF
