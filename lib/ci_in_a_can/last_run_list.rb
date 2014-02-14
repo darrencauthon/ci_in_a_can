@@ -9,7 +9,7 @@ module CiInACan
 
     def self.all
       blah = CiInACan::Persistence.hash_for("test_run_list")
-      blah.sort_by { |x| x[0] }.map { |x| x[1] }
+      blah.sort_by { |x| x[0] }.reverse.map { |x| x[1] }
     end
 
   end

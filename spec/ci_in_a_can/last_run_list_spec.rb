@@ -28,7 +28,7 @@ describe CiInACan::LastRunList do
     describe "sorting" do
 
       let(:build) { CiInACan::Build.new }
-      it "should sort by created_at" do
+      it "should sort by created_at in DESC order" do
 
         test_results = [CiInACan::TestResult.new(id: 'c', created_at: Time.parse('1/3/2014')),
                         CiInACan::TestResult.new(id: 'a', created_at: Time.parse('1/1/2014')),
@@ -37,9 +37,9 @@ describe CiInACan::LastRunList do
         test_results.each { |t| CiInACan::LastRunList.add build, t }
 
         results = CiInACan::LastRunList.all
-        results[0][:test_result_id].must_equal 'a'
+        results[0][:test_result_id].must_equal 'c'
         results[1][:test_result_id].must_equal 'b'
-        results[2][:test_result_id].must_equal 'c'
+        results[2][:test_result_id].must_equal 'a'
       end
 
     end
