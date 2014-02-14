@@ -28,7 +28,7 @@ module CiInACan
           Created At
         </td>
         <td>
-          #{test_result.id}
+          #{test_result.created_at.to_s}
         </td>
       </tr>
       <tr>
