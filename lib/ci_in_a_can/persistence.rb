@@ -14,6 +14,13 @@ module CiInACan
       store.transaction(true) { store[id] }
     end
 
+    def self.hash_for type
+      store = store_for(type)
+      store.transaction do
+        store.roots.inject({}) { |t, i| t[i] = store[i]; t }
+      end
+    end
+
     private
 
     def self.store_for type
