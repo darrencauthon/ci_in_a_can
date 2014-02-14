@@ -9,25 +9,59 @@ module CiInACan
     end
 
     get '/test_result/:id' do
-      CiInACan::TestResult.find(params[:id]).to_json
+      test_result = CiInACan::TestResult.find(params[:id]).to_json
+
+      CiInACan::WebContent.full_page_of(
+<<EOF
+    <table class="table table-bordered">
+      <tbody>
+      <tr>
+        <td>
+          Id
+        </td>
+        <td>
+          #{test_result.id}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Created At
+        </td>
+        <td>
+          #{test_result.id}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Passed
+        </td>
+        <td>
+          #{test_result.passed ? 'Yes' : 'No'}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Output
+        </td>
+        <td>
+          #{test_result.output.to_s.gsub("\n", '<br />')}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+EOF
+)
     end
 
     get '/' do
+      CiInACan::WebContent.full_page_of(
 <<EOF
-<html>
-  <head>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-  </head>
-  <body>
     <table class="table table-bordered">
       <tbody>
       </tbody>
     </table>
-  </body>
-</html>
 EOF
+)
     end
 
     post '/' do
