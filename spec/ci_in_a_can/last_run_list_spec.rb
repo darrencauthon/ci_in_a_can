@@ -33,6 +33,30 @@ describe CiInACan::LastRunList do
         
     end
 
+    it "should track the build id" do
+      build.id = UUID.new.generate
+      CiInACan::LastRunList.add build, test_result
+      CiInACan::LastRunList.all.first[:build_id].must_equal build.id
+    end
+
+    it "should track the build id" do
+      build.id = UUID.new.generate
+      CiInACan::LastRunList.add build, test_result
+      CiInACan::LastRunList.all.first[:build_id].must_equal build.id
+    end
+
+    it "should track the build sha" do
+      build.sha = UUID.new.generate
+      CiInACan::LastRunList.add build, test_result
+      CiInACan::LastRunList.all.first[:sha].must_equal build.sha
+    end
+
+    it "should track the build repo" do
+      build.repo = UUID.new.generate
+      CiInACan::LastRunList.add build, test_result
+      CiInACan::LastRunList.all.first[:repo].must_equal build.repo
+    end
+
     [true, false].each do |passed|
       describe "the test_result outcome" do
 
