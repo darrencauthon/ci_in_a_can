@@ -8,6 +8,10 @@ module CiInACan
       attr_accessor :jobs_location
     end
 
+    get '/test_result/:id.json' do
+      CiInACan::TestResult.find(params[:id]).to_json
+    end
+
     get '/test_result/:id' do
       test_result = CiInACan::TestResult.find(params[:id])
 
