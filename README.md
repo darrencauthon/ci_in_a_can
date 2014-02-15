@@ -23,7 +23,7 @@ Install with:
 Run:
 
 ````
-ciinacan YOUR_NAME
+ciinacan create YOUR_NAME
 cd YOUR_NAME
 rake start &
 disown
