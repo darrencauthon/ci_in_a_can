@@ -3,7 +3,14 @@ module CiInACan
   module LastRunList
 
     def self.add build, test_result
-      data = { created_at: test_result.created_at, test_result_id: test_result.id, passed: test_result.passed, build_id: build.id, sha: build.sha, repo: build.repo }
+      data = { 
+               created_at:     test_result.created_at,
+               test_result_id: test_result.id,
+               passed:         test_result.passed,
+               build_id:       build.id,
+               sha:            build.sha,
+               repo:           build.repo 
+             }
       CiInACan::Persistence.save("test_run_list", test_result.created_at, data)
     end
 
