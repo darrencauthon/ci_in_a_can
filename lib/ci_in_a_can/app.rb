@@ -67,7 +67,7 @@ EOF
                         #{run.passed ? 'Yes' : 'No'}
                       </td>
                       <td>
-                        <a href="/test_result/#{sha.test_result_id}">#{run.sha}</a>
+                        <a href="/test_result/#{run.test_result_id}">#{run.sha}</a>
                       </td>
                     </tr>
 EOF
