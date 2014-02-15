@@ -54,10 +54,30 @@ EOF
     end
 
     get '/' do
+      run_html = CiInACan::LastRunList.all.map do |run|
+<<EOF
+                    <tr>
+                      <td>
+                        #{run.created_at}
+                      </td>
+                      <td>
+                        #{run.repo}
+                      </td>
+                      <td>
+                        #{run.passed ? 'Yes' : 'No'}
+                      </td>
+                      <td>
+                        #{run.sha}
+                      </td>
+                    </tr>
+EOF
+                 end.join("\n")
+
       CiInACan::WebContent.full_page_of(
 <<EOF
     <table class="table table-bordered">
       <tbody>
+      #{run_html}
       </tbody>
     </table>
 EOF
