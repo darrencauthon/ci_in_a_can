@@ -7,7 +7,7 @@ module CiInACan
         @value = value
       end
       def method_missing(meth, *args, &blk)
-        @value[:meth]
+        @value[meth]
       end
     end
 
