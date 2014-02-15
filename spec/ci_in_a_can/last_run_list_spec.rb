@@ -21,6 +21,37 @@ describe CiInACan::LastRunList do
       results.first.contrast_with! expected
     end
 
+    it "should track the test_result_id" do
+
+      test_result.id = UUID.new.generate
+
+      CiInACan::LastRunList.add build, test_result
+
+      results = CiInACan::LastRunList.all
+
+      results.first[:test_result_id].must_equal test_result.id
+        
+    end
+
+    [true, false].each do |passed|
+      describe "the test_result outcome" do
+
+        let(:build)       { CiInACan::Build.new }
+        let(:test_result) { CiInACan::TestResult.new }
+
+        it "should track the test_result passed outcome" do
+          test_result.passed = passed
+
+          CiInACan::LastRunList.add build, test_result
+
+          results = CiInACan::LastRunList.all
+
+          results.first[:passed].must_equal passed
+        end
+
+      end
+    end
+
   end
 
   describe "all" do
