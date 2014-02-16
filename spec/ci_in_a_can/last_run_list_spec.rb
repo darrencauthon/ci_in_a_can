@@ -17,8 +17,7 @@ describe CiInACan::LastRunList do
       results = CiInACan::LastRunList.all
       results.count.must_equal 1
 
-      expected = { created_at: test_result.created_at }
-      results.first.contrast_with! expected
+      results.first.created_at.must_equal test_result.created_at 
     end
 
     it "should track the test_result_id" do
@@ -29,32 +28,32 @@ describe CiInACan::LastRunList do
 
       results = CiInACan::LastRunList.all
 
-      results.first[:test_result_id].must_equal test_result.id
+      results.first.test_result_id.must_equal test_result.id
         
     end
 
     it "should track the build id" do
       build.id = UUID.new.generate
       CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first[:build_id].must_equal build.id
+      CiInACan::LastRunList.all.first.build_id.must_equal build.id
     end
 
     it "should track the build id" do
       build.id = UUID.new.generate
       CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first[:build_id].must_equal build.id
+      CiInACan::LastRunList.all.first.build_id.must_equal build.id
     end
 
     it "should track the build sha" do
       build.sha = UUID.new.generate
       CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first[:sha].must_equal build.sha
+      CiInACan::LastRunList.all.first.sha.must_equal build.sha
     end
 
     it "should track the build repo" do
       build.repo = UUID.new.generate
       CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first[:repo].must_equal build.repo
+      CiInACan::LastRunList.all.first.repo.must_equal build.repo
     end
 
     [true, false].each do |passed|
@@ -70,7 +69,7 @@ describe CiInACan::LastRunList do
 
           results = CiInACan::LastRunList.all
 
-          results.first[:passed].must_equal passed
+          results.first.passed.must_equal passed
         end
 
       end
@@ -92,9 +91,9 @@ describe CiInACan::LastRunList do
         test_results.each { |t| CiInACan::LastRunList.add build, t }
 
         results = CiInACan::LastRunList.all
-        results[0][:test_result_id].must_equal 'c'
-        results[1][:test_result_id].must_equal 'b'
-        results[2][:test_result_id].must_equal 'a'
+        results[0].test_result_id.must_equal 'c'
+        results[1].test_result_id.must_equal 'b'
+        results[2].test_result_id.must_equal 'a'
       end
 
     end
