@@ -13,7 +13,8 @@ module CiInACan
       CiInACan::TestResult.create( { passed: bash_result.successful,
                                      output: bash_result.output,
                                      build_id: build.id,
-                                     branch: build.branch } )
+                                     branch: build.branch,
+                                     repo:   build.repo } )
     end
 
     def self.run commands
