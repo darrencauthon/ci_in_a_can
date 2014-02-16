@@ -38,7 +38,7 @@ module CiInACan
       array = payload['ref'].split('/')
       array.shift # remove "refs"
       array.shift # remove next value (like "heads" or "tags")
-      array.join('/')
+      array.count == 0 ? payload['ref'] : array.join('/')
     end
 
   end
