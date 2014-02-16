@@ -56,6 +56,12 @@ describe CiInACan::LastRunList do
       CiInACan::LastRunList.all.first.repo.must_equal build.repo
     end
 
+    it "should track the branch" do
+      build.branch = UUID.new.generate
+      CiInACan::LastRunList.add build, test_result
+      CiInACan::LastRunList.all.first.branch.must_equal build.branch
+    end
+
     [true, false].each do |passed|
       describe "the test_result outcome" do
 
