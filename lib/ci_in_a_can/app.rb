@@ -12,7 +12,8 @@ module CiInACan
       CiInACan::TestResult.find(params[:id]).to_json
     end
 
-    post '/repo/:id' do
+    post %r{/repo/(.+)} do
+      params[:id] = params[:captures].first
       commands = params[:commands].gsub("\r\n", "\n").split("\n")
       commands = commands.map { |x| x.strip }.select { |x| x != '' }
       data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
@@ -21,7 +22,8 @@ module CiInACan
       redirect "/repo/#{params[:id]}"
     end
 
-    get '/repo/:id' do
+    get %r{/repo/(.+)} do
+      params[:id] = params[:captures].first
       data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
       commands = data[:commands] || []
       commands = commands.join("\n")
