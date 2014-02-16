@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "octokit"
   spec.add_runtime_dependency "daemons"
   spec.add_runtime_dependency "subtle"
+  spec.add_runtime_dependency "systemu"
 end
