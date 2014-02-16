@@ -12,6 +12,31 @@ module CiInACan
       CiInACan::TestResult.find(params[:id]).to_json
     end
 
+    post '/repo/:id' do
+      commands = params[:commands].gsub("\r\n", "\n").split("\n")
+      commands = commands.map { |x| x.strip }.select { |x| x != '' }
+      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
+      data[:commands] = commands
+      CiInACan::Persistence.save('build_commands', params[:id], data)
+      redirect "/repo/#{params[:id]}"
+    end
+
+    get '/repo/:id' do
+      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
+      commands = data[:commands] || []
+      commands = commands.join("\n")
+      CiInACan::WebContent.full_page_of(
+<<EOF
+<form action="/repo/#{params[:id]}" method="post">
+<textarea name="commands">
+#{commands}
+</textarea>
+<input type="submit">Submit</inputk
+</form>
+EOF
+)
+    end
+
     get '/test_result/:id' do
       test_result = CiInACan::TestResult.find(params[:id])
 
