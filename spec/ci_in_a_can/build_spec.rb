@@ -37,6 +37,23 @@ describe CiInACan::Build do
 
     end
 
+    describe "when a build setting exists" do
+
+      let(:build) { CiInACan::Build.new }
+      let(:commands_for_build) { [Object.new] }
+
+      before do
+        CiInACan::BuildSetting.stubs(:commands_for)
+                              .with(build)
+                              .returns commands_for_build
+      end
+
+      it "should return those commands" do
+        build.commands.must_be_same_as commands_for_build
+      end
+
+    end
+
   end
 
   describe "parse" do
