@@ -8,13 +8,27 @@ desc "Start"
 task :start do
   location = File.expand_path(File.dirname(__FILE__))
   system "ruby service/service.rb start"
-  system "cd web; rackup -p 80"
+  system "ruby web/stay_alive.rb start"
 end
 
 desc "Stop"
 task :stop do
   location = File.expand_path(File.dirname(__FILE__))
   system "ruby service/service.rb stop"
+end
+EOF
+end
+
+def web_daemon
+<<EOF
+require 'daemons'
+
+this_directory = File.expand_path(File.dirname(__FILE__))
+
+::Daemons.run_proc('web.rb') do
+  loop do
+    exec "cd \#{this_directory};rackup -p 80"
+  end
 end
 EOF
 end
@@ -74,6 +88,7 @@ when 'create'
 
   File.open("#{root}/Rakefile", 'w')           { |f| f.write rake_file    }
   File.open("#{root}/service/service.rb", 'w') { |f| f.write service_file }
+  File.open("#{root}/web/stay_alive.rb", 'w')  { |f| f.write web_daemon   }
   File.open("#{root}/web/config.ru", 'w')      { |f| f.write web_file     }
 
 end
