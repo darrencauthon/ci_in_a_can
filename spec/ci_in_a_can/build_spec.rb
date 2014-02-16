@@ -18,11 +18,25 @@ describe CiInACan::Build do
     build.created_at.must_be_same_as now
   end
 
-  it "should default commands to the basic ruby conventions" do
-    result = CiInACan::Build.new.commands
-    result.count.must_equal 2
-    result[0].must_equal 'bundle install'
-    result[1].must_equal 'bundle exec rake'
+  describe "commands" do
+
+    describe "when no build settings exist for the build" do
+
+      let(:build) { CiInACan::Build.new }
+
+      before do
+        CiInACan::BuildSetting.stubs(:commands_for).with(build).returns []
+      end
+
+      it "should default commands to the basic ruby conventions" do
+        result = build.commands
+        result.count.must_equal 2
+        result[0].must_equal 'bundle install'
+        result[1].must_equal 'bundle exec rake'
+      end
+
+    end
+
   end
 
   describe "parse" do
