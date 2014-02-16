@@ -12,6 +12,33 @@ module CiInACan
       CiInACan::TestResult.find(params[:id]).to_json
     end
 
+    post %r{/repo/(.+)} do
+      params[:id] = params[:captures].first
+      commands = params[:commands].gsub("\r\n", "\n").split("\n")
+      commands = commands.map { |x| x.strip }.select { |x| x != '' }
+      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
+      data[:commands] = commands
+      CiInACan::Persistence.save('build_commands', params[:id], data)
+      redirect "/repo/#{params[:id]}"
+    end
+
+    get %r{/repo/(.+)} do
+      params[:id] = params[:captures].first
+      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
+      commands = data[:commands] || []
+      commands = commands.join("\n")
+      CiInACan::WebContent.full_page_of(
+<<EOF
+<form action="/repo/#{params[:id]}" method="post">
+<textarea name="commands">
+#{commands}
+</textarea>
+<input type="submit">Submit</inputk
+</form>
+EOF
+)
+    end
+
     get '/test_result/:id' do
       test_result = CiInACan::TestResult.find(params[:id])
 
@@ -32,7 +59,9 @@ module CiInACan
           Repo
         </td>
         <td>
+          <a href="/repo/#{test_result.repo}">
           #{test_result.repo}
+          </a>
         </td>
       </tr>
       <tr>
@@ -81,7 +110,9 @@ EOF
                         #{run.created_at}
                       </td>
                       <td>
+                        <a href="/repo/#{run.repo}">
                         #{run.repo}
+                        </a>
                       </td>
                       <td>
                         #{run.branch}

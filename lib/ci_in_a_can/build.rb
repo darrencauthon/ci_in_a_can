@@ -15,7 +15,8 @@ module CiInACan
     end
 
     def commands
-      ['bundle install', 'bundle exec rake']
+      commands = CiInACan::BuildSetting.commands_for self
+      commands.count > 0 ? commands : ['bundle install', 'bundle exec rake']
     end
 
   end
