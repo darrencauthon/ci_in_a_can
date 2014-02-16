@@ -8,7 +8,9 @@ module CiInACan
 
       CiInACan::Build.new(git_ssh: "git@github.com:#{project}.git",
                           repo:    project,
+                          branch:  extract_branch_from(payload),
                           sha:     extract_sha_from(payload))
+
     end
 
     private
@@ -30,6 +32,11 @@ module CiInACan
 
     def extract_sha_from payload
       payload['head_commit']['id']
+    end
+
+    def extract_branch_from payload
+      splat = payload['ref'].split('/')
+      splat[2]
     end
 
   end

@@ -7,7 +7,7 @@ module CiInACan
     end
 
     attr_accessor :id, :git_ssh, :sha,
-                  :local_location, :repo,
+                  :local_location, :repo, :branch,
                   :created_at
 
     def self.parse content
