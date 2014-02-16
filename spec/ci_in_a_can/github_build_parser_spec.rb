@@ -5,7 +5,8 @@ describe CiInACan::GithubBuildParser do
 
   [:branch, :ref, :compare, :sha, :git_ssh, :repo].to_objects {[
     ["blah", "refs/heads/blah", "https://github.com/darrencauthon/ci_in_a_can/commit/b1c5f9c9588f", "qwe", "git@github.com:darrencauthon/ci_in_a_can.git", "darrencauthon/ci_in_a_can"],
-    ["bloo", "refs/heads/bloo", "https://github.com/abc/123/commit/b1c5f9c9588f",                   "uio", "git@github.com:abc/123.git",                   "abc/123"]
+    ["bloo", "refs/heads/bloo", "https://github.com/abc/123/commit/b1c5f9c9588f",                   "uio", "git@github.com:abc/123.git",                   "abc/123"],
+    ["issues/5/blop", "refs/heads/issues/5/blop", "https://github.com/abc/123/commit/b1c5f9c9588f",                   "uio", "git@github.com:abc/123.git",                   "abc/123"]
   ]}.each do |test|
 
     describe "parse" do
