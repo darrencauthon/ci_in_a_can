@@ -2,7 +2,6 @@ require_relative '../spec_helper'
 
 describe CiInACan::GithubBuildParser do
 
-
   [:branch, :compare, :sha, :git_ssh, :repo].to_objects {[
     ["blah",          "https://github.com/darrencauthon/ci_in_a_can/commit/b1c5f9c9588f", "qwe", "git@github.com:darrencauthon/ci_in_a_can.git", "darrencauthon/ci_in_a_can"],
     ["bloo",          "https://github.com/abc/123/commit/b1c5f9c9588f",                   "uio", "git@github.com:abc/123.git",                   "abc/123"],
