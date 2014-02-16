@@ -35,8 +35,9 @@ module CiInACan
     end
 
     def extract_branch_from payload
-      splat = payload['ref'].split('/')
-      splat[2]
+      #splat = payload['ref'].split('/')
+      #splat[2]
+      payload['ref'].sub('refs/heads/', '')
     end
 
   end
