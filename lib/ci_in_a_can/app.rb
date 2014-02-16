@@ -29,6 +29,22 @@ module CiInACan
       </tr>
       <tr>
         <td>
+          Repo
+        </td>
+        <td>
+          #{test_result.repo}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Branch
+        </td>
+        <td>
+          #{test_result.branch}
+        </td>
+      </tr>
+      <tr>
+        <td>
           Created At
         </td>
         <td>
@@ -66,6 +82,9 @@ EOF
                       </td>
                       <td>
                         #{run.repo}
+                      </td>
+                      <td>
+                        #{run.branch}
                       </td>
                       <td>
                         #{run.passed ? 'Yes' : 'No'}
