@@ -12,6 +12,9 @@ module CiInACan
     attr_accessor :id
     attr_accessor :passed, :output
     attr_accessor :created_at
+    attr_accessor :build_id
+    attr_accessor :branch
+    attr_accessor :repo
 
     def self.create values
       test_result = create_the_test_result_from values

@@ -4,14 +4,16 @@ module CiInACan
 
     def self.run_tests_for build
       bash_result = run get_commands_for(build)
-      build_test_result_from bash_result
+      build_test_result_from bash_result, build
     end
 
     private
 
-    def self.build_test_result_from bash_result
+    def self.build_test_result_from bash_result, build
       CiInACan::TestResult.create( { passed: bash_result.successful,
-                                     output: bash_result.output } )
+                                     output: bash_result.output,
+                                     build_id: build.id,
+                                     branch: build.branch } )
     end
 
     def self.run commands

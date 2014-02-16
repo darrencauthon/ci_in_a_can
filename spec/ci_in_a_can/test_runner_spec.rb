@@ -50,6 +50,24 @@ describe CiInACan::TestRunner do
           result.output.must_be_same_as output
         end
 
+        it "should pass the id from the build" do
+          build.id = Object.new
+          result = CiInACan::TestRunner.run_tests_for build
+          result.build_id.must_be_same_as build.id
+        end
+
+        it "should pass the branch from the build" do
+          build.branch = Object.new
+          result = CiInACan::TestRunner.run_tests_for build
+          result.branch.must_be_same_as build.branch
+        end
+
+        it "should pass the repo from the build" do
+          build.repo = Object.new
+          result = CiInACan::TestRunner.run_tests_for build
+          result.repo.must_be_same_as build.repo
+        end
+
         it "should return a passed test result if the command returns true" do
           bash_result.stubs(:successful).returns true
           result = CiInACan::TestRunner.run_tests_for build
