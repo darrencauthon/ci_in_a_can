@@ -18,7 +18,8 @@ module CiInACan
                passed:         test_result.passed,
                build_id:       build.id,
                sha:            build.sha,
-               repo:           build.repo 
+               repo:           build.repo,
+               branch:         build.branch
              }
       CiInACan::Persistence.save("test_run_list", test_result.created_at, data)
     end
