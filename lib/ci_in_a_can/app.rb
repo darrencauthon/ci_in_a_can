@@ -59,7 +59,9 @@ EOF
           Repo
         </td>
         <td>
+          <a href="/repo/#{test_result.repo}">
           #{test_result.repo}
+          </a>
         </td>
       </tr>
       <tr>
@@ -108,7 +110,9 @@ EOF
                         #{run.created_at}
                       </td>
                       <td>
+                        <a href="/repo/#{run.repo}">
                         #{run.repo}
+                        </a>
                       </td>
                       <td>
                         #{run.branch}
