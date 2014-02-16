@@ -12,6 +12,8 @@ describe CiInACan::GithubBuildParser do
 
       let(:ref) { "refs/heads/#{test.branch}" }
 
+      # content is a representation of the web request
+      # that github will send on every push
       let(:content) do
         {
           payload: {
