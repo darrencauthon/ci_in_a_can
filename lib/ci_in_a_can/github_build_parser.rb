@@ -35,7 +35,12 @@ module CiInACan
     end
 
     def extract_branch_from payload
-      payload['ref'].sub('refs/heads/', '')
+      #payload['ref'].sub('refs/heads/', '')
+      #payload['ref'].sub('refs/')
+      array = payload['ref'].split('/')
+      array.shift # remove "refs"
+      array.shift # remove next value (like "heads" or "tags")
+      array.join('/')
     end
 
   end
