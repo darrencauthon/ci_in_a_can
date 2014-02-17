@@ -13,6 +13,12 @@ module CiInACan
     end
 
     post %r{/repo/(.+)} do
+
+      if ENV['PASSPHRASE'] != params[:passphrase].to_s
+        redirect '/'
+        return
+      end
+
       params[:id] = params[:captures].first
       commands = params[:commands].gsub("\r\n", "\n").split("\n")
       commands = commands.map { |x| x.strip }.select { |x| x != '' }
@@ -30,6 +36,8 @@ module CiInACan
       CiInACan::WebContent.full_page_of(
 <<EOF
 <form action="/repo/#{params[:id]}" method="post">
+<label>Passphrase</label>
+<input type="text" name="passphrase">
 <textarea name="commands">
 #{commands}
 </textarea>

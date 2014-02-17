@@ -40,7 +40,8 @@ When any push is made to your Github repository, Github will send a notification
 1.  A default rake task that runs all of your tests.
 2.  An environment variable named GITHUB_AUTH_TOKEN.  This is used to report results back to Github.
 3.  An environment variable named SITE_URL.  This will be the URL of your site, for things like providing Github with a link back to the site to show test results.
-2.  A server that will "just run" your application.  Set up your own server with whatever dependencies your application needs.  
+4.  A server that will "just run" your application.  Set up your own server with whatever dependencies your application needs.  
+5.  An environment variable named PASSPHRASE. You'll need to provide this if you want to make config changes. You may not need to do this, so this step is optional.
 
 
 ## Contributing
