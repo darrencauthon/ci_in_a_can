@@ -45,28 +45,7 @@ EOF
     end
 
     get '/' do
-      run_html = CiInACan::LastRunList.all.map do |run|
-<<EOF
-                    <tr>
-                      <td>
-                        #{run.created_at}
-                      </td>
-                      <td>
-                        <a href="/repo/#{run.repo}">
-                        #{run.repo}
-                        </a>
-                      </td>
-                      <td>
-                        #{run.branch}
-                      </td>
-                      <td>
-                        #{run.passed ? 'Yes' : 'No'}
-                      </td>
-                      <td>
-                        <a href="/test_result/#{run.test_result_id}">#{run.sha}</a>
-                      </td>
-                    </tr>
-EOF
+      run_html = CiInACan::Run.all.map do |run|
                  end.join("\n")
 
       CiInACan::WebContent.full_page_of(

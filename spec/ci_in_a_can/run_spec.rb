@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe CiInACan::LastRunList do
+describe CiInACan::Run do
 
   before do
     clear_all_persisted_data
@@ -12,9 +12,9 @@ describe CiInACan::LastRunList do
     let(:test_result) { CiInACan::TestResult.new }
 
     it "should store information that we can pull out later" do
-      CiInACan::LastRunList.add build, test_result
+      CiInACan::Run.add build, test_result
 
-      results = CiInACan::LastRunList.all
+      results = CiInACan::Run.all
       results.count.must_equal 1
 
       results.first.created_at.must_equal test_result.created_at 
@@ -24,9 +24,9 @@ describe CiInACan::LastRunList do
 
       test_result.id = UUID.new.generate
 
-      CiInACan::LastRunList.add build, test_result
+      CiInACan::Run.add build, test_result
 
-      results = CiInACan::LastRunList.all
+      results = CiInACan::Run.all
 
       results.first.test_result_id.must_equal test_result.id
         
@@ -34,32 +34,32 @@ describe CiInACan::LastRunList do
 
     it "should track the build id" do
       build.id = UUID.new.generate
-      CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first.build_id.must_equal build.id
+      CiInACan::Run.add build, test_result
+      CiInACan::Run.all.first.build_id.must_equal build.id
     end
 
     it "should track the build id" do
       build.id = UUID.new.generate
-      CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first.build_id.must_equal build.id
+      CiInACan::Run.add build, test_result
+      CiInACan::Run.all.first.build_id.must_equal build.id
     end
 
     it "should track the build sha" do
       build.sha = UUID.new.generate
-      CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first.sha.must_equal build.sha
+      CiInACan::Run.add build, test_result
+      CiInACan::Run.all.first.sha.must_equal build.sha
     end
 
     it "should track the build repo" do
       build.repo = UUID.new.generate
-      CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first.repo.must_equal build.repo
+      CiInACan::Run.add build, test_result
+      CiInACan::Run.all.first.repo.must_equal build.repo
     end
 
     it "should track the branch" do
       build.branch = UUID.new.generate
-      CiInACan::LastRunList.add build, test_result
-      CiInACan::LastRunList.all.first.branch.must_equal build.branch
+      CiInACan::Run.add build, test_result
+      CiInACan::Run.all.first.branch.must_equal build.branch
     end
 
     [true, false].each do |passed|
@@ -71,9 +71,9 @@ describe CiInACan::LastRunList do
         it "should track the test_result passed outcome" do
           test_result.passed = passed
 
-          CiInACan::LastRunList.add build, test_result
+          CiInACan::Run.add build, test_result
 
-          results = CiInACan::LastRunList.all
+          results = CiInACan::Run.all
 
           results.first.passed.must_equal passed
         end
@@ -94,9 +94,9 @@ describe CiInACan::LastRunList do
                         CiInACan::TestResult.new(id: 'a', created_at: Time.parse('1/1/2014')),
                         CiInACan::TestResult.new(id: 'b', created_at: Time.parse('1/2/2014'))]
 
-        test_results.each { |t| CiInACan::LastRunList.add build, t }
+        test_results.each { |t| CiInACan::Run.add build, t }
 
-        results = CiInACan::LastRunList.all
+        results = CiInACan::Run.all
         results[0].test_result_id.must_equal 'c'
         results[1].test_result_id.must_equal 'b'
         results[2].test_result_id.must_equal 'a'
