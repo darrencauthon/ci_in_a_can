@@ -21,9 +21,9 @@ module CiInACan
         Proc.new do |_, new_files, _|
           next unless new_files.count > 0
 
-          File.delete new_files.first
-
           build = create_a_build_for(new_files.first, working_location)
+
+          File.delete new_files.first
 
           Runner.run build
 

@@ -121,6 +121,32 @@ describe CiInACan::Watcher do
             CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
           end
 
+          it "should not delete the file before it is read" do
+
+            content = Object.new
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+            CiInACan::Runner.stubs(:run)
+
+            CiInACan::Build.stubs(:parse).with(content).returns build
+
+            delete_called = false
+            File.expects(:read).with do |added_file|
+              delete_called.must_equal false
+              true
+            end.returns content
+
+            File.expects(:delete).with do |added_file|
+              delete_called = true
+              true
+            end
+
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
         end
 
       end
