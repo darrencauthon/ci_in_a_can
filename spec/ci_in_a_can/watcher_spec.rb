@@ -2,6 +2,10 @@ require_relative '../spec_helper'
 
 describe CiInACan::Watcher do
 
+  before do
+    File.stubs(:delete)
+  end
+
   describe "watch" do
 
     let(:watching_location) { Object.new }
@@ -99,6 +103,20 @@ describe CiInACan::Watcher do
               b.id.must_equal test.random_string
               true
             end
+
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
+          it "should delete the file" do
+
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+            CiInACan::Runner.stubs(:run)
+
+            File.expects(:delete).with added_file
 
             CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
           end
