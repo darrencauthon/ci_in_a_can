@@ -2,6 +2,10 @@ require_relative '../spec_helper'
 
 describe CiInACan::Watcher do
 
+  before do
+    File.stubs(:delete)
+  end
+
   describe "watch" do
 
     let(:watching_location) { Object.new }
@@ -100,6 +104,61 @@ describe CiInACan::Watcher do
               true
             end
 
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
+          it "should delete the file" do
+
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+            CiInACan::Runner.stubs(:run)
+
+            File.expects(:delete).with added_file
+
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
+          it "should not delete the file before it is read" do
+
+            content = Object.new
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+            CiInACan::Runner.stubs(:run)
+
+            CiInACan::Build.stubs(:parse).with(content).returns build
+
+            delete_called = false
+            File.expects(:read).with do |added_file|
+              delete_called.must_equal false
+              true
+            end.returns content
+
+            File.expects(:delete).with do |added_file|
+              delete_called = true
+              true
+            end
+
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
+          it "should not let an error in deleting a file bubble up" do
+
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+            CiInACan::Runner.stubs(:run)
+
+            File.stubs(:delete).raises 'k'
+
+            # this should not throw
             CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
           end
 
