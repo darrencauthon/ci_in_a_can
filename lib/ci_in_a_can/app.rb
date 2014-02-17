@@ -41,65 +41,7 @@ EOF
 
     get '/test_result/:id' do
       test_result = CiInACan::TestResult.find(params[:id])
-
-      CiInACan::WebContent.full_page_of(
-<<EOF
-    <table class="table table-bordered">
-      <tbody>
-      <tr>
-        <td>
-          Id
-        </td>
-        <td>
-          #{test_result.id}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Repo
-        </td>
-        <td>
-          <a href="/repo/#{test_result.repo}">
-          #{test_result.repo}
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Branch
-        </td>
-        <td>
-          #{test_result.branch}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Created At
-        </td>
-        <td>
-          #{test_result.created_at.to_s}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Passed
-        </td>
-        <td>
-          #{test_result.passed ? 'Yes' : 'No'}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Output
-        </td>
-        <td>
-          #{test_result.output.to_s.gsub("\n", '<br />')}
-        </td>
-      </tr>
-      </tbody>
-    </table>
-EOF
-)
+      CiInACan::WebContent.full_page_of test_result.to_html
     end
 
     get '/' do

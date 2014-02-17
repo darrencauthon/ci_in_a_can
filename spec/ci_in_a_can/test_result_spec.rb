@@ -95,4 +95,22 @@ describe CiInACan::TestRunner do
 
   end
 
+  describe "to html" do
+    it "should show the results of test_result_view_model" do
+      html       = Object.new
+      view_model = Object.new
+
+      test_result = CiInACan::TestResult.new
+
+      view_model.stubs(:to_html).returns html
+
+      CiInACan::ViewModels::TestResultViewModel
+        .stubs(:new)
+        .with(test_result)
+        .returns view_model
+
+      test_result.to_html.must_be_same_as html
+    end
+  end
+
 end
