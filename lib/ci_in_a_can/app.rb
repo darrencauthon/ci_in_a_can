@@ -41,91 +41,11 @@ EOF
 
     get '/test_result/:id' do
       test_result = CiInACan::TestResult.find(params[:id])
-
-      CiInACan::WebContent.full_page_of(
-<<EOF
-    <table class="table table-bordered">
-      <tbody>
-      <tr>
-        <td>
-          Id
-        </td>
-        <td>
-          #{test_result.id}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Repo
-        </td>
-        <td>
-          <a href="/repo/#{test_result.repo}">
-          #{test_result.repo}
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Branch
-        </td>
-        <td>
-          #{test_result.branch}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Created At
-        </td>
-        <td>
-          #{test_result.created_at.to_s}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Passed
-        </td>
-        <td>
-          #{test_result.passed ? 'Yes' : 'No'}
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Output
-        </td>
-        <td>
-          #{test_result.output.to_s.gsub("\n", '<br />')}
-        </td>
-      </tr>
-      </tbody>
-    </table>
-EOF
-)
+      CiInACan::WebContent.full_page_of test_result.to_html
     end
 
     get '/' do
-      run_html = CiInACan::LastRunList.all.map do |run|
-<<EOF
-                    <tr>
-                      <td>
-                        #{run.created_at}
-                      </td>
-                      <td>
-                        <a href="/repo/#{run.repo}">
-                        #{run.repo}
-                        </a>
-                      </td>
-                      <td>
-                        #{run.branch}
-                      </td>
-                      <td>
-                        #{run.passed ? 'Yes' : 'No'}
-                      </td>
-                      <td>
-                        <a href="/test_result/#{run.test_result_id}">#{run.sha}</a>
-                      </td>
-                    </tr>
-EOF
-                 end.join("\n")
+      run_html = CiInACan::Run.all.map { |r| r.to_html }.join("\n")
 
       CiInACan::WebContent.full_page_of(
 <<EOF

@@ -8,7 +8,7 @@ describe CiInACan::TestResultNotifier do
     let(:test_result) { CiInACan::TestResult.new }
 
     before do
-      CiInACan::LastRunList.stubs(:add)
+      CiInACan::Run.stubs(:add)
       CiInACan::Github.stubs(:report_complete_status_for)
     end
 
@@ -25,7 +25,7 @@ describe CiInACan::TestResultNotifier do
     end
 
     it "should add the build and test result to the last run list" do
-      CiInACan::LastRunList.expects(:add).with build, test_result
+      CiInACan::Run.expects(:add).with build, test_result
       CiInACan::TestResultNotifier.send_for build, test_result
     end
 

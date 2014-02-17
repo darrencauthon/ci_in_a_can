@@ -1,14 +1,19 @@
 module CiInACan
 
-  module LastRunList
+  class Run
 
-    class TestRunResult
-      def initialize value
-        @value = value
-      end
-      def method_missing(meth, *args, &blk)
-        @value[meth]
-      end
+    params_constructor
+
+    attr_accessor :created_at,
+                  :test_result_id,
+                  :passed,
+                  :build_id,
+                  :sha,
+                  :repo,
+                  :branch
+
+    def to_html
+      CiInACan::ViewModels::RunViewModel.new(self).to_html
     end
 
     def self.add build, test_result
@@ -26,7 +31,7 @@ module CiInACan
 
     def self.all
       blah = CiInACan::Persistence.hash_for("test_run_list")
-      blah.sort_by { |x| x[0] }.reverse.map { |x| TestRunResult.new x[1] }
+      blah.sort_by { |x| x[0] }.reverse.map { |x| new x[1] }
     end
 
   end

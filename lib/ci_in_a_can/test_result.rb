@@ -34,6 +34,10 @@ module CiInACan
         created_at: created_at
       }.to_json
     end
+    
+    def to_html
+      CiInACan::ViewModels::TestResultViewModel.new(self).to_html
+    end
 
     private
 
