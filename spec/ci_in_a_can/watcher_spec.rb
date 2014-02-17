@@ -147,6 +147,21 @@ describe CiInACan::Watcher do
             CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
           end
 
+          it "should not let an error in deleting a file bubble up" do
+
+            CiInACan::Runner.stubs(:wl).returns test.working_location
+
+            uuid = Object.new
+            uuid.stubs(:generate).returns test.random_string
+            UUID.stubs(:new).returns uuid
+            CiInACan::Runner.stubs(:run)
+
+            File.stubs(:delete).raises 'k'
+
+            # this should not throw
+            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
+          end
+
         end
 
       end

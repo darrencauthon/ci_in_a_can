@@ -23,7 +23,10 @@ module CiInACan
 
           build = create_a_build_for(new_files.first, working_location)
 
-          File.delete new_files.first
+          begin
+            File.delete new_files.first
+          rescue
+          end
 
           Runner.run build
 
