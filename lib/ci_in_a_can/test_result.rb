@@ -39,6 +39,10 @@ module CiInACan
       CiInACan::ViewModels::TestResultViewModel.new(self).to_html
     end
 
+    def output_summary
+      '2013 tests, 6058 assertions, 0 failures, 0 errors, 0 skips'
+    end
+
     private
 
     def self.create_the_test_result_from values
