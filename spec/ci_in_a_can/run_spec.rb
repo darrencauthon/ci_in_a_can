@@ -106,4 +106,22 @@ describe CiInACan::Run do
 
   end
 
+  describe "to html" do
+    it "should show the results of run_view_model" do
+      html       = Object.new
+      view_model = Object.new
+
+      run = CiInACan::Run.new
+
+      view_model.stubs(:to_html).returns html
+
+      CiInACan::ViewModels::RunViewModel
+        .stubs(:new)
+        .with(run)
+        .returns view_model
+
+      run.to_html.must_be_same_as html
+    end
+  end
+
 end

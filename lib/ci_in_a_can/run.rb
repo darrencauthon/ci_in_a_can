@@ -12,6 +12,10 @@ module CiInACan
                   :repo,
                   :branch
 
+    def to_html
+      CiInACan::ViewModels::RunViewModel.new(self).to_html
+    end
+
     def self.add build, test_result
       data = { 
                created_at:     test_result.created_at,

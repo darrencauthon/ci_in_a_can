@@ -45,8 +45,7 @@ EOF
     end
 
     get '/' do
-      run_html = CiInACan::Run.all.map do |run|
-                 end.join("\n")
+      run_html = CiInACan::Run.all.map { |r| r.to_html }.join("\n")
 
       CiInACan::WebContent.full_page_of(
 <<EOF
