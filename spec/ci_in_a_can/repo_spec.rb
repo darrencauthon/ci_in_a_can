@@ -8,27 +8,34 @@ describe CiInACan::Repo do
 
   describe "create and find" do
 
-    describe "finding a record by id" do
+    [:id].to_objects {[
+      ['abc'],
+      ['123']
+    ]}.each do |data|
 
-      it "should return a repo with that id" do
+      describe "finding a record by id" do
 
-        CiInACan::Repo.create(id: 'abc')
+        it "should return a repo with that id" do
 
-        repo = CiInACan::Repo.find 'abc'
-        repo.is_a?(CiInACan::Repo).must_equal true
-        repo.id.must_equal 'abc'
-      end
+          CiInACan::Repo.create( { id: data.id } )
 
-      it "should return the right record if many exist" do
+          repo = CiInACan::Repo.find data.id
+          repo.is_a?(CiInACan::Repo).must_equal true
+          repo.id.must_equal data.id
+        end
 
-        CiInACan::Repo.create(id: UUID.new.generate)
-        CiInACan::Repo.create(id: 'abc')
-        CiInACan::Repo.create(id: UUID.new.generate)
+        it "should return the right record if many exist" do
 
-        repo = CiInACan::Repo.find 'abc'
-        repo.is_a?(CiInACan::Repo).must_equal true
-        repo.id.must_equal 'abc'
-          
+          CiInACan::Repo.create(id: UUID.new.generate)
+          CiInACan::Repo.create(id: data.id)
+          CiInACan::Repo.create(id: UUID.new.generate)
+
+          repo = CiInACan::Repo.find data.id
+          repo.is_a?(CiInACan::Repo).must_equal true
+          repo.id.must_equal data.id
+            
+        end
+
       end
 
     end

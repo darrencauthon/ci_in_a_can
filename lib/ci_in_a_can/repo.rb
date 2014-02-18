@@ -6,8 +6,9 @@ module CiInACan
 
     attr_accessor :id
 
-    def self.create repo
-      CiInACan::Persistence.save('repos', repo[:id], { id: repo[:id] } )
+    def self.create data
+      repo_data = { id: data[:id] }
+      CiInACan::Persistence.save('repos', data[:id], repo_data)
     end
 
     def self.find id
