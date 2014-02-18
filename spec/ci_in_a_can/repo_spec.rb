@@ -4,13 +4,15 @@ describe CiInACan::Repo do
 
   before do
     clear_all_persisted_data
-
-    uuid = Object.new
-    uuid.stubs(:generate).returns api_key
-    UUID.stubs(:new).returns uuid
   end
 
   describe "create and find" do
+
+    before do
+      uuid = Object.new
+      uuid.stubs(:generate).returns api_key
+      UUID.stubs(:new).returns uuid
+    end
 
     [:id, :name, :api_key].to_objects {[
       ['abc', 'apple', 'test1'],
@@ -85,6 +87,20 @@ describe CiInACan::Repo do
 
     end
 
+  end
+
+  describe "resetting an api key" do
+    it "should reset the api key" do
+      r = CiInACan::Repo.create(id: 'test')
+      original_api_key = r.api_key
+
+      r.reset_api_key
+
+      r = CiInACan::Repo.find('test')
+      new_api_key = r.api_key
+
+      new_api_key.wont_equal original_api_key
+    end
   end
 
 end

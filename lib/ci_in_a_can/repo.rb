@@ -11,7 +11,10 @@ module CiInACan
     attr_accessor :api_key
 
     def self.create data
-      repo_data = { id: data[:id], name: data[:name], api_key: data[:api_key] }
+      data[:api_key] ||= UUID.new.generate
+      repo_data = { id:      data[:id],
+                    name:    data[:name],
+                    api_key: data[:api_key] }
       CiInACan::Persistence.save('repos', data[:id], repo_data)
       find data[:id]
     end
@@ -19,6 +22,12 @@ module CiInACan
     def self.find id
       data = CiInACan::Persistence.find('repos', id)
       CiInACan::Repo.new(data)
+    end
+
+    def reset_api_key
+      data = CiInACan::Persistence.find('repos', id)
+      data[:api_key] = UUID.new.generate
+      CiInACan::Persistence.save('repos', data[:id], data)
     end
 
   end
