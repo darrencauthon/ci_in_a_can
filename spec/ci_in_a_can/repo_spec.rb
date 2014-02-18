@@ -17,6 +17,17 @@ describe CiInACan::Repo do
       ['123', 'orang', 'test2']
     ]}.each do |data|
 
+      describe "create" do
+
+        let(:api_key) { data.api_key }
+
+        it "should return the repo" do
+          repo = CiInACan::Repo.create(id: data.id)
+          repo.is_a?(CiInACan::Repo).must_equal true
+          repo.id.must_equal data.id
+        end
+      end
+
       describe "finding a record by id" do
 
         let(:api_key) { data.api_key }

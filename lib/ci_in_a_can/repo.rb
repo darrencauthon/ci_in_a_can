@@ -13,6 +13,7 @@ module CiInACan
     def self.create data
       repo_data = { id: data[:id], name: data[:name], api_key: data[:api_key] }
       CiInACan::Persistence.save('repos', data[:id], repo_data)
+      find data[:id]
     end
 
     def self.find id
