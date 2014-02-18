@@ -92,6 +92,12 @@ describe CiInACan::Repo do
           end
         end
 
+        describe "build commands" do
+          it "should default to an empty array" do
+            CiInACan::Repo.new.build_commands.must_equal []
+          end
+        end
+
       end
 
     end

@@ -3,7 +3,8 @@ module CiInACan
   class Repo
 
     params_constructor do
-      @api_key = UUID.new.generate unless @api_key
+      @api_key        = UUID.new.generate unless @api_key
+      @build_commands = [] unless @build_commands
     end
 
     attr_accessor :id
