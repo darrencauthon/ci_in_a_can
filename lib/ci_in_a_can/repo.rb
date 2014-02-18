@@ -24,6 +24,11 @@ module CiInACan
       CiInACan::Repo.new(data)
     end
 
+    def save
+      data = { id: id, name: name, api_key: api_key }
+      CiInACan::Persistence.save('repos', id, data)
+    end
+
     def reset_api_key
       data = CiInACan::Persistence.find('repos', id)
       data[:api_key] = UUID.new.generate

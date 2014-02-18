@@ -89,6 +89,21 @@ describe CiInACan::Repo do
 
   end
 
+  describe "save" do
+    it "should update all of the fields" do
+      repo = CiInACan::Repo.create(id: 'test')
+      repo.name    = UUID.new.generate
+      repo.api_key = UUID.new.generate
+      repo.save
+
+      new_repo = CiInACan::Repo.find('test')
+
+      [:name, :api_key].each do |field|
+        new_repo.send(field).must_equal repo.send(field)
+      end
+    end
+  end
+
   describe "resetting an api key" do
     it "should reset the api key" do
       r = CiInACan::Repo.create(id: 'test')
