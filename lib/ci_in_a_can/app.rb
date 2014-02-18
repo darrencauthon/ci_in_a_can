@@ -22,15 +22,15 @@ module CiInACan
       params[:id] = params[:captures].first
       commands = params[:commands].gsub("\r\n", "\n").split("\n")
       commands = commands.map { |x| x.strip }.select { |x| x != '' }
-      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
+      data = CiInACan::Persistence.find('repos', params[:id]) || {}
       data[:commands] = commands
-      CiInACan::Persistence.save('build_commands', params[:id], data)
+      CiInACan::Persistence.save('repos', params[:id], data)
       redirect "/repo/#{params[:id]}"
     end
 
     get %r{/repo/(.+)} do
       params[:id] = params[:captures].first
-      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
+      data = CiInACan::Persistence.find('repos', params[:id]) || {}
       commands = data[:commands] || []
       commands = commands.join("\n")
       CiInACan::WebContent.full_page_of(

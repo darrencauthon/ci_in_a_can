@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe CiInACan::BuildSetting do
 
-  let(:persistence_type) { 'build_commands' }
+  let(:persistence_type) { 'repos' }
 
   before do
     clear_all_persisted_data
