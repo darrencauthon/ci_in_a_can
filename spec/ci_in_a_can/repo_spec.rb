@@ -83,6 +83,15 @@ describe CiInACan::Repo do
           repo.api_key.must_equal 'previously set value'
         end
 
+        [['one'], ['one', 'two', 'three']].each do |build_commands|
+          describe "different build commands" do
+            it "should store an array of build commands" do
+              repo = CiInACan::Repo.create(id: data.id, build_commands: build_commands)
+              repo.build_commands.must_equal build_commands
+            end
+          end
+        end
+
       end
 
     end
@@ -92,13 +101,14 @@ describe CiInACan::Repo do
   describe "save" do
     it "should update all of the fields" do
       repo = CiInACan::Repo.create(id: 'test')
-      repo.name    = UUID.new.generate
-      repo.api_key = UUID.new.generate
+      repo.name           = UUID.new.generate
+      repo.api_key        = UUID.new.generate
+      repo.build_commands = [UUID.new.generate]
       repo.save
 
       new_repo = CiInACan::Repo.find('test')
 
-      [:name, :api_key].each do |field|
+      [:name, :api_key, :build_commands].each do |field|
         new_repo.send(field).must_equal repo.send(field)
       end
     end
