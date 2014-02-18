@@ -66,7 +66,15 @@ EOF
 )
     end
 
-    post '/' do
+    post %r{/push/(.+)} do
+      capture = params[:captures].first.split('/')
+      api_key = capture.shift
+      id      = capture.join('/')
+
+      repo = CiInACan::Repo.find id
+      raise 'Could not find this repo' unless repo
+      raise 'Invalid API Key' unless repo.api_key == api_key
+
       write_a_file_with params
     end
 
