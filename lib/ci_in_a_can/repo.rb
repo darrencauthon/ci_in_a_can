@@ -30,6 +30,10 @@ module CiInACan
       CiInACan::Persistence.save('repos', data[:id], data)
     end
 
+    def url
+      "/push/#{id}/#{api_key}"
+    end
+
   end
 
 end

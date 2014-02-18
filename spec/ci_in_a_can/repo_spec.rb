@@ -103,4 +103,13 @@ describe CiInACan::Repo do
     end
   end
 
+  ['test', 'test2'].each do |id|
+    describe "url" do
+      it "should return push/id/api_key" do
+        repo = CiInACan::Repo.create(id: id)
+        repo.url.must_equal "/push/#{repo.id}/#{repo.api_key}"
+      end
+    end
+  end
+
 end
