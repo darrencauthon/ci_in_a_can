@@ -8,9 +8,9 @@ describe CiInACan::Repo do
 
   describe "create and find" do
 
-    [:id].to_objects {[
-      ['abc'],
-      ['123']
+    [:id, :name].to_objects {[
+      ['abc', 'apple'],
+      ['123', 'orang']
     ]}.each do |data|
 
       describe "finding a record by id" do
@@ -36,6 +36,13 @@ describe CiInACan::Repo do
             
         end
 
+      end
+
+      it "should allow the stamping by name" do
+        CiInACan::Repo.create(id: data.id, name: data.name)
+
+        repo = CiInACan::Repo.find data.id
+        repo.name.must_equal data.name
       end
 
     end

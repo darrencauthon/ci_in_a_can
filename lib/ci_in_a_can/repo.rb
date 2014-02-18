@@ -5,9 +5,10 @@ module CiInACan
     params_constructor
 
     attr_accessor :id
+    attr_accessor :name
 
     def self.create data
-      repo_data = { id: data[:id] }
+      repo_data = { id: data[:id], name: data[:name] }
       CiInACan::Persistence.save('repos', data[:id], repo_data)
     end
 
