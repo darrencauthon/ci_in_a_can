@@ -150,4 +150,19 @@ describe CiInACan::Repo do
     end
   end
 
+  describe "all" do
+    it "should return all of the repos" do
+      repo_ids = [CiInACan::Repo.create(id: UUID.new.generate),
+                  CiInACan::Repo.create(id: UUID.new.generate),
+                  CiInACan::Repo.create(id: UUID.new.generate)].map { |x| x.id }
+
+      actual_ids = CiInACan::Repo.all.map { |x| x.id }.sort_by { |x| x }
+
+      repo_ids.sort_by! { |x| x }
+      actual_ids.sort_by! { |x| x }
+
+      repo_ids.must_equal actual_ids
+    end
+  end
+
 end

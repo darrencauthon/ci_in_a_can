@@ -33,6 +33,11 @@ module CiInACan
       CiInACan::Persistence.save('repos', id, data)
     end
 
+    def self.all
+      blah = CiInACan::Persistence.hash_for("repos")
+      blah.sort_by { |x| x[0] }.reverse.map { |x| new x[1] }
+    end
+
     def reset_api_key
       data = CiInACan::Persistence.find('repos', id)
       data[:api_key] = UUID.new.generate
