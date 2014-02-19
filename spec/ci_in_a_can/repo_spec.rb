@@ -165,4 +165,19 @@ describe CiInACan::Repo do
     end
   end
 
+  describe "find by api key" do
+    it "should return the repo with the matching api key" do
+      repos = (1..3).to_a.map do |_|
+                CiInACan::Repo.create(id:      UUID.new.generate,
+                                      api_key: UUID.new.generate)
+              end
+
+      repos.each do |repo|
+        found = CiInACan::Repo.find_by_api_key repo.api_key
+        repo.id.must_equal found.id
+      end
+        
+    end
+  end
+
 end

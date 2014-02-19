@@ -28,6 +28,10 @@ module CiInACan
       CiInACan::Repo.new(data)
     end
 
+    def self.find_by_api_key api_key
+      all.select { |x| x.api_key == api_key }.first
+    end
+
     def save
       data = { id: id, name: name, api_key: api_key, build_commands: build_commands }
       CiInACan::Persistence.save('repos', id, data)
