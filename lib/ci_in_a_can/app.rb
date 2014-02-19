@@ -32,10 +32,12 @@ module CiInACan
     get %r{/repo/(.+)} do
       params[:id] = params[:captures].first
       repo = CiInACan::Repo.find(params[:id])
+      url      = repo ? repo.url : nil
       commands = repo ? repo.build_commands.join("\n") : ''
       CiInACan::WebContent.full_page_of(
 <<EOF
 <form action="/repo/#{params[:id]}" method="post">
+<div>#{url}</div>
 <label>Passphrase</label>
 <input type="text" name="passphrase">
 <textarea name="commands">
