@@ -97,7 +97,7 @@ EOF
 
     post %r{/push/(.+)} do
       capture = params[:captures].first.split('/')
-      api_key = capture.shift
+      api_key = capture.pop
       id      = capture.join('/')
 
       repo = CiInACan::Repo.find id
