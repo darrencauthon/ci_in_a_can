@@ -4,8 +4,31 @@ module CiInACan
 
   class App < Sinatra::Base
 
+    enable :sessions
+
+    before do
+      session[:authenticated] = session[:passphrase] == ENV['PASSPHRASE'].to_s
+    end
+
     class << self
       attr_accessor :jobs_location
+    end
+
+    get '/login' do
+      CiInACan::WebContent.full_page_of(
+<<EOF
+<form action="/login" method="post">
+Passphrase
+<input type="password" name="passphrase">
+<button type="submit">Submit</button>
+</form>
+EOF
+)
+    end
+
+    post '/login' do
+      session[:passphrase] = params[:passphrase]
+      redirect '/'
     end
 
     get '/test_result/:id.json' do
@@ -14,8 +37,8 @@ module CiInACan
 
     post %r{/repo/(.+)} do
 
-      if ENV['PASSPHRASE'] != params[:passphrase].to_s
-        redirect '/'
+      unless session[:authenticated]
+        redirect '/login'
         return
       end
 
@@ -30,6 +53,12 @@ module CiInACan
     end
 
     get %r{/repo/(.+)} do
+
+      unless session[:authenticated]
+        redirect '/login'
+        return
+      end
+
       params[:id] = params[:captures].first
       repo = CiInACan::Repo.find(params[:id])
       url      = repo ? repo.url : nil
@@ -43,7 +72,7 @@ module CiInACan
 <textarea name="commands">
 #{commands}
 </textarea>
-<input type="submit">Submit</inputk
+<input type="submit">Submit</input>
 </form>
 EOF
 )
