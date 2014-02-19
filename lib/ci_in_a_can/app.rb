@@ -67,8 +67,6 @@ EOF
 <<EOF
 <form action="/repo/#{params[:id]}" method="post">
 <div>#{url}</div>
-<label>Passphrase</label>
-<input type="text" name="passphrase">
 <textarea name="commands">
 #{commands}
 </textarea>
