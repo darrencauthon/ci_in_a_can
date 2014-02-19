@@ -24,6 +24,7 @@ module CiInACan
 
     def self.find id
       data = CiInACan::Persistence.find('repos', id)
+      return nil unless data
       CiInACan::Repo.new(data)
     end
 

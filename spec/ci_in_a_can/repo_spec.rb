@@ -57,6 +57,13 @@ describe CiInACan::Repo do
 
       end
 
+      describe "finding a record that does not exist" do
+        let(:api_key) { data.api_key }
+        it "should return nil" do
+          CiInACan::Repo.find(data.id).nil?.must_equal true
+        end
+      end
+
       describe "attributes" do
 
         let(:api_key) { data.api_key }
