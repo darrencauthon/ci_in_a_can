@@ -20,12 +20,23 @@ describe CiInACan::Build do
 
   describe "commands" do
 
+    let(:repo_name) { Object.new }
+    let(:repo)      { CiInACan::Repo.new }
+
+    let(:build) do
+      b = CiInACan::Build.new
+      b.repo = repo_name
+      b
+    end
+
+    before do
+      CiInACan::Repo.stubs(:find).with(repo_name).returns repo
+    end
+
     describe "when no build settings exist for the build" do
 
-      let(:build) { CiInACan::Build.new }
-
       before do
-        CiInACan::BuildSetting.stubs(:commands_for).with(build).returns []
+        repo.stubs(:build_commands).returns []
       end
 
       it "should default commands to the basic ruby conventions" do
@@ -39,13 +50,10 @@ describe CiInACan::Build do
 
     describe "when a build setting exists" do
 
-      let(:build) { CiInACan::Build.new }
       let(:commands_for_build) { [Object.new] }
 
       before do
-        CiInACan::BuildSetting.stubs(:commands_for)
-                              .with(build)
-                              .returns commands_for_build
+        repo.stubs(:build_commands).returns commands_for_build
       end
 
       it "should return those commands" do
