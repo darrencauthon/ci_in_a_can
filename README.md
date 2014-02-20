@@ -1,3 +1,5 @@
+![CI In a Can](https://raw.github.com/darrencauthon/ci_in_a_can/master/assets/smalllogo.png)
+
 # CI In a Can
 
 Super-easy continuous integration.  With one command, you can turn a cloud server (AWS, Digital Ocean) into a CI server for Ruby apps. Others (like node, .Net) coming soon.
