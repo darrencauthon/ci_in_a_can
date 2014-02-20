@@ -25,8 +25,7 @@ Run:
 ````
 ciinacan create YOUR_NAME
 cd YOUR_NAME
-rake start &
-disown
+rake start
 ````
 
 This will create a directory named YOUR_NAME, start up a Sinatra app on port 80, and start a backend service for running builds.  **You now have a running CI server.**
