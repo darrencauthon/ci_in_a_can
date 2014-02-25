@@ -9,6 +9,6 @@ when 'create'
   root = "#{Dir.pwd}/#{ARGV[1]}"
   id   = root.split('/').pop
 
-  CiInACan::Cli::StructureBuilder.new(root, id).create
+  CiInACan::Cli::StructureBuilder.new(root: root, id: id).create
 
 end

@@ -4,10 +4,9 @@ module CiInACan
 
     class StructureBuilder
 
-      def initialize root, id
-        @root = root
-        @id   = id
-      end
+      params_constructor
+
+      attr_accessor :root, :id
 
       def create
         directories_to_create = [@root, "#{@root}/jobs", "#{@root}/repos", "#{@root}/web", "#{@root}/service", "#{@root}/results"]
