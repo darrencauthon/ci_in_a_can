@@ -6,7 +6,7 @@ case ARGV[0].to_s.downcase
 when 'create'
 
   root = "#{Dir.pwd}/#{ARGV[1]}"
-  id = root.split('/').pop
+  id   = root.split('/').pop
 
   CiInACan::Cli::StructureBuilder.new(root, id).create
 
