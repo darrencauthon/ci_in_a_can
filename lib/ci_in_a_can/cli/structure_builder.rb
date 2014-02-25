@@ -9,13 +9,15 @@ module CiInACan
       attr_accessor :root, :id
 
       def create
+
+        create_directories ["#{@root}", "#{@root}/jobs", "#{@root}/repos", "#{@root}/web", "#{@root}/service", "#{@root}/results"]
+
         files = ::CiInACan::Cli::Files.for @id, @root
         create_file "#{@root}/Rakefile", files.rake_file
         create_file "#{@root}/service/service.rb", files.service_file
         create_file "#{@root}/web/stay_alive.rb", files.web_daemon
         create_file "#{@root}/web/config.ru", files.web_file
 
-        create_directories ["#{@root}", "#{@root}/jobs", "#{@root}/repos", "#{@root}/web", "#{@root}/service", "#{@root}/results"]
       end
 
       private

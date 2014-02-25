@@ -62,6 +62,19 @@ describe CiInACan::Cli::StructureBuilder do
         builder.create
       end
 
+      it "should not create any files until the directories are created" do
+        directories_created = false
+        builder.stubs(:create_directories).with do |directories|
+          directories_created = true
+          true
+        end
+        CiInACan::FileSystem.stubs(:create_file).with do |file|
+          directories_created.must_equal true
+          true
+        end
+        builder.create
+      end
+
     end
 
   end
