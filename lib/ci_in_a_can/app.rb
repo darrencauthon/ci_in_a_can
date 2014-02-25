@@ -4,8 +4,31 @@ module CiInACan
 
   class App < Sinatra::Base
 
+    enable :sessions
+
+    before do
+      session[:authenticated] = session[:passphrase] == ENV['PASSPHRASE'].to_s
+    end
+
     class << self
       attr_accessor :jobs_location
+    end
+
+    get '/login' do
+      CiInACan::WebContent.full_page_of(
+<<EOF
+<form action="/login" method="post">
+Passphrase
+<input type="password" name="passphrase">
+<button type="submit">Submit</button>
+</form>
+EOF
+)
+    end
+
+    post '/login' do
+      session[:passphrase] = params[:passphrase]
+      redirect '/'
     end
 
     get '/test_result/:id.json' do
@@ -14,34 +37,40 @@ module CiInACan
 
     post %r{/repo/(.+)} do
 
-      if ENV['PASSPHRASE'] != params[:passphrase].to_s
-        redirect '/'
+      unless session[:authenticated]
+        redirect '/login'
         return
       end
 
       params[:id] = params[:captures].first
       commands = params[:commands].gsub("\r\n", "\n").split("\n")
       commands = commands.map { |x| x.strip }.select { |x| x != '' }
-      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
-      data[:commands] = commands
-      CiInACan::Persistence.save('build_commands', params[:id], data)
+      repo = CiInACan::Repo.find params[:id]
+      repo = CiInACan::Repo.create(id: params[:id]) unless repo
+      repo.build_commands = commands
+      repo.save
       redirect "/repo/#{params[:id]}"
     end
 
     get %r{/repo/(.+)} do
+
+      unless session[:authenticated]
+        redirect '/login'
+        return
+      end
+
       params[:id] = params[:captures].first
-      data = CiInACan::Persistence.find('build_commands', params[:id]) || {}
-      commands = data[:commands] || []
-      commands = commands.join("\n")
+      repo = CiInACan::Repo.find(params[:id])
+      url      = repo ? repo.url : nil
+      commands = repo ? repo.build_commands.join("\n") : ''
       CiInACan::WebContent.full_page_of(
 <<EOF
 <form action="/repo/#{params[:id]}" method="post">
-<label>Passphrase</label>
-<input type="text" name="passphrase">
+<div>#{url}</div>
 <textarea name="commands">
 #{commands}
 </textarea>
-<input type="submit">Submit</inputk
+<input type="submit">Submit</input>
 </form>
 EOF
 )
@@ -66,7 +95,15 @@ EOF
 )
     end
 
-    post '/' do
+    post %r{/push/(.+)} do
+      capture = params[:captures].first.split('/')
+      api_key = capture.pop
+      id      = capture.join('/')
+
+      repo = CiInACan::Repo.find id
+      raise 'Could not find this repo' unless repo
+      raise 'Invalid API Key' unless repo.api_key == api_key
+
       write_a_file_with params
     end
 

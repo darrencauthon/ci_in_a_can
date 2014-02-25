@@ -1,3 +1,5 @@
+![CI In a Can](https://raw.github.com/darrencauthon/ci_in_a_can/master/assets/smalllogo.png)
+
 # CI In a Can
 
 Super-easy continuous integration.  With one command, you can turn a cloud server (AWS, Digital Ocean) into a CI server for Ruby apps. Others (like node, .Net) coming soon.
@@ -25,8 +27,7 @@ Run:
 ````
 ciinacan create YOUR_NAME
 cd YOUR_NAME
-rake start &
-disown
+rake start
 ````
 
 This will create a directory named YOUR_NAME, start up a Sinatra app on port 80, and start a backend service for running builds.  **You now have a running CI server.**
