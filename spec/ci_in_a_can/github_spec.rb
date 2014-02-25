@@ -83,6 +83,7 @@ describe CiInACan::Github do
         test_result = Object.new
         test_result.stubs(:id).returns UUID.new.generate
         test_result.stubs(:passed).returns true
+        test_result.stubs(:output_summary).returns Object.new
         test_result
       end
 
@@ -90,7 +91,11 @@ describe CiInACan::Github do
         client = Object.new
         CiInACan::Github.stubs(:client).returns client
 
-        client.expects(:create_status).with(build.repo, build.sha, 'success', { target_url: expected_url } )
+        options = { 
+                    target_url:  expected_url,
+                    description: test_result.output_summary
+                  }
+        client.expects(:create_status).with(build.repo, build.sha, 'success', options)
 
         CiInACan::Github.report_complete_status_for build, test_result
       end
@@ -103,6 +108,7 @@ describe CiInACan::Github do
         test_result = Object.new
         test_result.stubs(:passed).returns false
         test_result.stubs(:id).returns UUID.new.generate
+        test_result.stubs(:output_summary).returns Object.new
         test_result
       end
 
@@ -110,7 +116,12 @@ describe CiInACan::Github do
         client = Object.new
         CiInACan::Github.stubs(:client).returns client
 
-        client.expects(:create_status).with(build.repo, build.sha, 'failure', { target_url: expected_url } )
+        options = { 
+                    target_url:  expected_url,
+                    description: test_result.output_summary
+                  }
+        client.expects(:create_status)
+              .with(build.repo, build.sha, 'failure', options)
 
         CiInACan::Github.report_complete_status_for build, test_result
       end

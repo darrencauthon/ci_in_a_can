@@ -39,6 +39,12 @@ module CiInACan
       CiInACan::ViewModels::TestResultViewModel.new(self).to_html
     end
 
+    def output_summary
+      output.split("\n")
+            .select { |x| x.to_s.strip != '' }
+            .last
+    end
+
     private
 
     def self.create_the_test_result_from values

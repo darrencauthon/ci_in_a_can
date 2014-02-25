@@ -22,7 +22,10 @@ module CiInACan
       return nil unless client
       client.create_status(build.repo, build.sha, 
                            complete_status_from(test_result), 
-                           { target_url: target_url_for(test_result) } )
+                           { 
+                             target_url:  target_url_for(test_result),
+                             description: test_result.output_summary
+                           } )
     end
 
     private
