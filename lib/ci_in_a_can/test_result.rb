@@ -41,7 +41,7 @@ module CiInACan
 
     def output_summary
       output.split("\n")
-            .select { |x| x.to_s != '' }
+            .select { |x| x.to_s.strip != '' }
             .last
     end
 
