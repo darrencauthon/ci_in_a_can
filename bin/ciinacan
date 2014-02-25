@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'ci_in_a_can'
+#require 'ci_in_a_can'
+require_relative '../lib/ci_in_a_can'
 
 case ARGV[0].to_s.downcase
 when 'create'
