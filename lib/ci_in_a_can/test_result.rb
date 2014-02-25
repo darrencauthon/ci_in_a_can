@@ -40,7 +40,9 @@ module CiInACan
     end
 
     def output_summary
-      '2013 tests, 6058 assertions, 0 failures, 0 errors, 0 skips'
+      output.split("\n")
+            .select { |x| x.to_s != '' }
+            .last
     end
 
     private
