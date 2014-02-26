@@ -104,6 +104,9 @@ EOF
       raise 'Could not find this repo' unless repo
       raise 'Invalid API Key' unless repo.api_key == api_key
 
+      build = Build.parse params.to_json
+      CiInACan::Github.client.create_status repo.id, build, 'pending'
+
       write_a_file_with params
     end
 
