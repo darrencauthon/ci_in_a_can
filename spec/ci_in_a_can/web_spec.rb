@@ -205,6 +205,12 @@ describe CiInACan::Web do
           CiInACan::Repo.all.first.build_commands.must_equal test.expected_commands
         end
 
+        it "should return the repo" do
+          result = web.update_repo_details
+          result.is_a? CiInACan::Repo
+          result.id.must_equal test.expected_id
+        end
+
       end
 
     end
