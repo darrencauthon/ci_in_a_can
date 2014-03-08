@@ -15,15 +15,7 @@ module CiInACan
     end
 
     get '/login' do
-      CiInACan::WebContent.full_page_of(
-<<EOF
-<form action="/login" method="post">
-Passphrase
-<input type="password" name="passphrase">
-<button type="submit">Submit</button>
-</form>
-EOF
-)
+      CiInACan::ViewModels::LoginForm.new.to_html
     end
 
     post '/login' do

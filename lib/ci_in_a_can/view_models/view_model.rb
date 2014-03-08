@@ -4,7 +4,7 @@ module CiInACan
 
     class ViewModel
 
-      def initialize value
+      def initialize value = nil
         @value = value
       end
 
