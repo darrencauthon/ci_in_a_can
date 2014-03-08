@@ -59,21 +59,9 @@ EOF
         return
       end
 
-      params[:id] = params[:captures].first
-      repo = CiInACan::Repo.find(params[:id])
-      url      = repo ? repo.url : nil
-      commands = repo ? repo.build_commands.join("\n") : ''
-      CiInACan::WebContent.full_page_of(
-<<EOF
-<form action="/repo/#{params[:id]}" method="post">
-<div>#{url}</div>
-<textarea name="commands">
-#{commands}
-</textarea>
-<input type="submit">Submit</input>
-</form>
-EOF
-)
+      id = params[:captures].first
+      repo = CiInACan::Repo.find(id) || CiInACan::Repo.new(id: id)
+      CiInACan::ViewModels::RepoForm.new(repo).to_html
     end
 
     get '/test_result/:id' do
