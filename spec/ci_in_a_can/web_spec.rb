@@ -152,4 +152,63 @@ describe CiInACan::Web do
 
   end
 
+  [:captures, :commands, :expected_id, :expected_commands].to_objects {[
+    [['one/two'],   "\na\r\nb\nc\r\nd\n\n", 'one/two',   ['a', 'b', 'c', 'd']],
+    [['two/three'], "w\nx\ny\r\nz",         'two/three', ['w', 'x', 'y', 'z']]
+  ]}.each do |test|
+
+    describe "updating the repo details" do
+
+      before do
+        clear_all_persisted_data
+      end
+
+      describe "a repo that has never been saved before" do
+
+        before do
+          params[:captures] = test.captures
+          params[:commands] = test.commands
+        end
+
+        it "should create a repo" do
+          web.update_repo_details
+          CiInACan::Repo.all.count.must_equal 1
+        end
+
+        it "should set the id" do
+          web.update_repo_details
+          CiInACan::Repo.all.first.id.must_equal test.expected_id
+        end
+
+        it "should set the build commands" do
+          web.update_repo_details
+          CiInACan::Repo.all.first.build_commands.must_equal test.expected_commands
+        end
+
+      end
+
+      describe "a repo that been saved before" do
+
+        before do
+          CiInACan::Repo.create(id: test.expected_id)
+          params[:captures] = test.captures
+          params[:commands] = test.commands
+        end
+
+        it "should create a repo" do
+          web.update_repo_details
+          CiInACan::Repo.all.count.must_equal 1
+        end
+
+        it "should set the build commands" do
+          web.update_repo_details
+          CiInACan::Repo.all.first.build_commands.must_equal test.expected_commands
+        end
+
+      end
+
+    end
+
+  end
+
 end

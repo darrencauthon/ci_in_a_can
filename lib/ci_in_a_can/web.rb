@@ -55,11 +55,9 @@ module CiInACan
       params[:id] = params[:captures].first
       commands = params[:commands].gsub("\r\n", "\n").split("\n")
       commands = commands.map { |x| x.strip }.select { |x| x != '' }
-      repo = CiInACan::Repo.find params[:id]
-      repo = CiInACan::Repo.create(id: params[:id]) unless repo
+      repo = CiInACan::Repo.create(id: params[:id])
       repo.build_commands = commands
       repo.save
-      repo
     end
 
     def write_a_file_with params
