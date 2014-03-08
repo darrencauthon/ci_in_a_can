@@ -2,6 +2,14 @@ require_relative '../spec_helper'
 
 describe CiInACan::Web do
 
+  let(:params)  { {} }
+  let(:session) { {} }
+
+  let(:web) do
+    CiInACan::Web.new(params:  params,
+                      session: session)
+  end
+
   describe "login page" do
 
     it "should return the login form html" do
@@ -12,7 +20,7 @@ describe CiInACan::Web do
       login_form.stubs(:to_html).returns html
       CiInACan::ViewModels::LoginForm.stubs(:new).returns login_form
 
-      CiInACan::Web.new.login_page.must_be_same_as html
+      web.login_page.must_be_same_as html
 
     end
 
@@ -23,10 +31,7 @@ describe CiInACan::Web do
     it "should set the passphrase in session" do
 
       passphrase = Object.new
-      params     = { passphrase: passphrase }
-      session    = {}
-
-      web = CiInACan::Web.new(params: params, session: session)
+      params[:passphrase] = passphrase
 
       web.submit_a_passphrase
 
@@ -40,7 +45,7 @@ describe CiInACan::Web do
 
     it "should return the json results" do
 
-      params      = { id: Object.new}
+      params[:id] = Object.new
       test_result = Object.new
       json        = Object.new
 
@@ -50,7 +55,7 @@ describe CiInACan::Web do
                           .with(params[:id])
                           .returns test_result
 
-      result = CiInACan::Web.new(params: params).show_the_test_result_in_json
+      result = web.show_the_test_result_in_json
 
       result.must_be_same_as json
         
