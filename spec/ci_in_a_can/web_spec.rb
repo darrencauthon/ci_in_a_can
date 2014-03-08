@@ -105,4 +105,51 @@ describe CiInACan::Web do
 
   end
 
+  describe "showing the repo edit form" do
+
+    describe "when the id matches an existing repo" do
+
+      it "should return the html for the repo form" do
+
+        id                = Object.new
+        params[:captures] = [id]
+        repo              = Object.new
+        repo_form         = Object.new
+        html              = Object.new
+
+        repo_form.stubs(:to_html).returns html
+
+        CiInACan::Repo.stubs(:find).with(id).returns repo
+        CiInACan::ViewModels::RepoForm.stubs(:new).with(repo).returns repo_form
+
+        web.show_the_repo_edit_form.must_be_same_as html
+          
+      end
+
+    end
+
+    describe "when the id has never been used" do
+
+      it "should return the html for a new repo form" do
+
+        id                = Object.new
+        params[:captures] = [id]
+        repo              = Object.new
+        repo_form         = Object.new
+        html              = Object.new
+
+        repo_form.stubs(:to_html).returns html
+
+        CiInACan::Repo.stubs(:find).with(id).returns nil
+        CiInACan::Repo.stubs(:new).with(id: id).returns repo
+        CiInACan::ViewModels::RepoForm.stubs(:new).with(repo).returns repo_form
+
+        web.show_the_repo_edit_form.must_be_same_as html
+          
+      end
+
+    end
+
+  end
+
 end
