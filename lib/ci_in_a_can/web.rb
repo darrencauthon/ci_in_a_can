@@ -14,7 +14,7 @@ module CiInACan
       session[:passphrase] = params[:passphrase]
     end
 
-    def show_a_test_result
+    def show_the_test_result_in_json
       CiInACan::TestResult.find(params[:id]).to_json
     end
 
