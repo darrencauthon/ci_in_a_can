@@ -8,6 +8,10 @@ module CiInACan
         @value = value
       end
 
+      def the_original_value
+        @value
+      end
+
       def method_missing(meth, *args, &blk)
         @value.send(meth)
       end
