@@ -52,12 +52,11 @@ module CiInACan
     end
 
     def update_repo_details
-      params[:id] = params[:captures].first
-      commands = params[:commands].gsub("\r\n", "\n").split("\n")
-      commands = commands.map { |x| x.strip }.select { |x| x != '' }
-      repo = CiInACan::Repo.create(id: params[:id])
-      repo.build_commands = commands
-      repo.save
+      CiInACan::Repo.create(id:             params[:captures].first, 
+                            build_commands: params[:commands].gsub("\r\n", "\n")
+                                                             .split("\n")
+                                                             .map    { |x| x.strip }
+                                                             .select { |x| x != '' } )
     end
 
     def write_a_file_with params
