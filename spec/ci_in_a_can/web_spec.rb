@@ -217,4 +217,29 @@ describe CiInACan::Web do
 
   end
 
+  describe "showing a list of the runs" do
+
+    it "should return the html for all of the runs" do
+
+      runs          = Object.new
+      array_of_runs = Object.new
+      html          = Object.new
+      list_of_runs  = Object.new
+
+
+      CiInACan::Run.stubs(:all).returns runs
+      runs.stubs(:to_a).returns array_of_runs
+      CiInACan::ViewModels::AListOfRuns.stubs(:new)
+                                       .with(array_of_runs)
+                                       .returns list_of_runs
+      list_of_runs.stubs(:to_html).returns html
+
+      result = web.show_a_list_of_the_runs
+
+      result.must_be_same_as html
+
+    end
+
+  end
+
 end

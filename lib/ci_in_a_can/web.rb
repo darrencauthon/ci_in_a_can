@@ -42,8 +42,7 @@ module CiInACan
     end
 
     def show_a_list_of_the_runs
-      runs = CiInACan::Run.all.to_a
-      ::CiInACan::ViewModels::AListOfRuns.new(runs).to_html
+      CiInACan::ViewModels::AListOfRuns.new(CiInACan::Run.all.to_a).to_html
     end
 
     def show_the_test_result
