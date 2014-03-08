@@ -19,7 +19,8 @@ module CiInACan
     end
 
     def logged_in?
-      session[:authenticated]
+      return false if session[:passphrase].to_s == ''
+      session[:passphrase] == ENV['PASSPHRASE']
     end
 
     def show_the_repo_edit_form

@@ -36,7 +36,7 @@ describe CiInACan::Web do
       web.submit_a_passphrase
 
       session[:passphrase].must_be_same_as passphrase
-        
+
     end
 
   end
@@ -58,7 +58,49 @@ describe CiInACan::Web do
       result = web.show_the_test_result_in_json
 
       result.must_be_same_as json
-        
+
+    end
+
+  end
+
+  describe "determining if the user is authenticated" do
+
+    it "should return true if the passphrase in session and ENV match" do
+
+      passphrase = Object.new
+
+      ENV.stubs(:[]).with('PASSPHRASE').returns passphrase
+      session[:passphrase] = passphrase
+
+      web.logged_in?.must_equal true
+
+    end
+
+    it "should return false if the passphrases do not match" do
+
+      ENV.stubs(:[]).with('PASSPHRASE').returns Object.new
+      session[:passphrase] = Object.new
+
+      web.logged_in?.must_equal false
+
+    end
+
+    it "should return false if the passphrases are nil" do
+
+      ENV.stubs(:[]).with('PASSPHRASE').returns nil
+      session[:passphrase] = nil
+
+      web.logged_in?.must_equal false
+
+    end
+
+    it "should return false if the passphrases are empty strings" do
+
+      ENV.stubs(:[]).with('PASSPHRASE').returns ""
+      session[:passphrase] = ""
+
+      web.logged_in?.must_equal false
+
     end
 
   end
