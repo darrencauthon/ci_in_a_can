@@ -82,17 +82,8 @@ EOF
     end
 
     get '/' do
-      run_html = CiInACan::Run.all.map { |r| r.to_html }.join("\n")
-
-      CiInACan::WebContent.full_page_of(
-<<EOF
-    <table class="table table-bordered">
-      <tbody>
-      #{run_html}
-      </tbody>
-    </table>
-EOF
-)
+      runs = CiInACan::Run.all.to_a
+      ::CiInACan::ViewModels::AListOfRuns.new(runs).to_html
     end
 
     post %r{/push/(.+)} do
