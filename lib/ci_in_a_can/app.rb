@@ -10,38 +10,34 @@ module CiInACan
       session[:authenticated] = session[:passphrase] == ENV['PASSPHRASE'].to_s
     end
 
+    before do
+      @web = CiInACan::Web.new(params: params, session: session)
+    end
+
     class << self
       attr_accessor :jobs_location
     end
 
     get '/login' do
-      CiInACan::ViewModels::LoginForm.new.to_html
+      @web.login_page
     end
 
     post '/login' do
-      session[:passphrase] = params[:passphrase]
+      @web.submit_a_passphrase
       redirect '/'
     end
 
     get '/test_result/:id.json' do
-      CiInACan::TestResult.find(params[:id]).to_json
+      @web.show_a_test_result
     end
 
     post %r{/repo/(.+)} do
-
-      unless session[:authenticated]
+      unless @web.logged_in?
         redirect '/login'
         return
       end
-
-      params[:id] = params[:captures].first
-      commands = params[:commands].gsub("\r\n", "\n").split("\n")
-      commands = commands.map { |x| x.strip }.select { |x| x != '' }
-      repo = CiInACan::Repo.find params[:id]
-      repo = CiInACan::Repo.create(id: params[:id]) unless repo
-      repo.build_commands = commands
-      repo.save
-      redirect "/repo/#{params[:id]}"
+      repo = @web.update_repo_details
+      redirect "/repo/#{repo.id}"
     end
 
     get %r{/repo/(.+)} do
