@@ -36,4 +36,26 @@ describe CiInACan::Web do
 
   end
 
+  describe "showing the test result in json" do
+
+    it "should return the json results" do
+
+      params      = { id: Object.new}
+      test_result = Object.new
+      json        = Object.new
+
+      test_result.stubs(:to_json).returns json
+
+      CiInACan::TestResult.stubs(:find)
+                          .with(params[:id])
+                          .returns test_result
+
+      result = CiInACan::Web.new(params: params).show_the_test_result_in_json
+
+      result.must_be_same_as json
+        
+    end
+
+  end
+
 end
