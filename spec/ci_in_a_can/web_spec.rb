@@ -271,29 +271,38 @@ describe CiInACan::Web do
 
   describe "starting a new build" do
 
-    it "should not fail when we call it" do
-      repo = Object.new
-      repo.stubs(:api_key).returns 'api_key'
-      json = Object.new
-      params[:captures] = ['account/name/api_key']
+    [:url, :repo, :api_key, :jobs_location, :uuid].to_objects {[
+      ['account/name/api_key', 'account/name', 'api_key', 'the job', 'the uuid'],
+      ['one/two/three',        'one/two',      'three',   'A',       'B']
+    ]}.each do |test|
 
-      job_location = Object.new
+      describe "when the api key is valid" do
 
-      params.stubs(:to_json).returns json
+        it "should not fail when we call it" do
+          repo = Object.new
+          json = Object.new
+          repo.stubs(:api_key).returns test.api_key
+          params[:captures] = [test.url]
 
-      CiInACan::Repo.stubs(:find)
-                    .with('account/name')
-                    .returns repo
+          params.stubs(:to_json).returns json
 
-      CiInACan::Web.stubs(:jobs_location).returns job_location
+          CiInACan::Repo.stubs(:find)
+                        .with(test.repo)
+                        .returns repo
 
-      File.stubs(:open)
+          CiInACan::Web.stubs(:jobs_location).returns test.jobs_location
 
-      uuid = Object.new
-      uuid.stubs(:generate).returns 'the uuid'
-      UUID.stubs(:new).returns uuid
+          File.stubs(:open)
 
-      web.start_a_new_build
+          uuid = Object.new
+          uuid.stubs(:generate).returns test.uuid
+          UUID.stubs(:new).returns uuid
+
+          web.start_a_new_build
+        end
+
+      end
+
     end
 
   end
