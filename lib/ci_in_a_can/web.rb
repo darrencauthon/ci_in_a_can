@@ -46,7 +46,7 @@ module CiInACan
 
     def show_the_test_result
       test_result = CiInACan::TestResult.find(params[:id])
-      CiInACan::WebContent.full_page_of test_result.to_html
+      CiInACan::WebContent.layout_page_around test_result.to_html
     end
 
     def update_repo_details

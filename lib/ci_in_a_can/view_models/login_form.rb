@@ -5,7 +5,7 @@ module CiInACan
     class LoginForm < ViewModel
 
       def to_html
-        CiInACan::WebContent.full_page_of(
+        CiInACan::WebContent.layout_page_around(
 <<EOF
 <form action="/login" method="post">
 Passphrase

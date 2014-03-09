@@ -56,7 +56,7 @@ describe CiInACan::Web do
                           .with(params[:id])
                           .returns test_result
 
-      CiInACan::WebContent.stubs(:full_page_of)
+      CiInACan::WebContent.stubs(:layout_page_around)
                           .with(html)
                           .returns web_content
 

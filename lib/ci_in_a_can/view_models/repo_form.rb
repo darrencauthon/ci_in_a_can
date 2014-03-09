@@ -5,7 +5,7 @@ module CiInACan
     class RepoForm < ViewModel
 
       def to_html
-        CiInACan::WebContent.full_page_of(
+        CiInACan::WebContent.layout_page_around(
 <<EOF
 <form action="/repo/#{id}" method="post">
 <div>#{url}</div>

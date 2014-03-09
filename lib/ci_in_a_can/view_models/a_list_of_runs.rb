@@ -7,7 +7,7 @@ module CiInACan
       def to_html
         run_html = the_original_value.map { |r| r.to_html }.join("\n")
 
-        CiInACan::WebContent.full_page_of(
+        CiInACan::WebContent.layout_page_around(
 <<EOF
     <table class="table table-bordered">
       <tbody>

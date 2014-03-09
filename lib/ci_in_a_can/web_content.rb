@@ -2,7 +2,7 @@ module CiInACan
 
   module WebContent
 
-    def self.full_page_of content
+    def self.layout_page_around content
 <<EOF
 <html>
   <head>
