@@ -322,6 +322,105 @@ describe CiInACan::Web do
 
     end
 
+    [:url, :repo, :api_key, :jobs_location, :uuid].to_objects {[
+      ['account/name/api_key', 'account/name', 'api_key', 'the job', 'the uuid'],
+    ]}.each do |test|
+
+      describe "when the repo does not exist" do
+
+        let(:repo) do
+          r = Object.new
+          r.stubs(:api_key).returns test.api_key
+          r
+        end
+
+        before do
+          params[:captures] = [test.url]
+
+          CiInACan::Repo.stubs(:find)
+                        .with(test.repo)
+                        .returns nil
+
+          CiInACan::FileSystem.stubs(:create_file)
+
+          uuid = Object.new
+          uuid.stubs(:generate).returns test.uuid
+          UUID.stubs(:new).returns uuid
+        end
+
+        it "should throw an error" do
+          error_hit = false
+          begin
+            web.start_a_new_build
+          rescue
+            error_hit = true
+          end
+
+          error_hit.must_equal true
+        end
+
+        it "should not write any files" do
+          called = false
+          # having some issue with never?
+          CiInACan::FileSystem.stubs(:create_file).with { |a, b| [a, b].inspect; called = true; true }
+          -> { web.start_a_new_build }.call_safely
+          called.must_equal false
+        end
+
+      end
+
+    end
+
+    [:url, :repo, :api_key, :jobs_location, :uuid, :the_other_api_key].to_objects {[
+      ['account/name/api_key', 'account/name', 'api_key', 'the job', 'the uuid', 'sdf'],
+      ['account/name/api_key', 'account/name', 'api_key', 'the job', 'the uuid', 'abc'],
+    ]}.each do |test|
+
+      describe "when the repo api key does not match the request" do
+
+        let(:repo) do
+          r = Object.new
+          r.stubs(:api_key).returns test.the_other_api_key
+          r
+        end
+
+        before do
+          params[:captures] = [test.url]
+
+          CiInACan::Repo.stubs(:find)
+                        .with(test.repo)
+                        .returns repo
+
+          CiInACan::FileSystem.stubs(:create_file)
+
+          uuid = Object.new
+          uuid.stubs(:generate).returns test.uuid
+          UUID.stubs(:new).returns uuid
+        end
+
+        it "should throw an error" do
+          error_hit = false
+          begin
+            web.start_a_new_build
+          rescue
+            error_hit = true
+          end
+
+          error_hit.must_equal true
+        end
+
+        it "should not write any files" do
+          called = false
+          # having some issue with never?
+          CiInACan::FileSystem.stubs(:create_file).with { |a, b| [a, b].inspect; called = true; true }
+          -> { web.start_a_new_build }.call_safely
+          called.must_equal false
+        end
+
+      end
+
+    end
+
   end
 
 end
