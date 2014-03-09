@@ -278,10 +278,15 @@ describe CiInACan::Web do
 
       describe "when the api key is valid" do
 
-        it "should not fail when we call it" do
-          repo = Object.new
-          json = Object.new
-          repo.stubs(:api_key).returns test.api_key
+        let(:repo) do
+          r = Object.new
+          r.stubs(:api_key).returns test.api_key
+          r
+        end
+
+        let(:json) { Object.new }
+
+        before do
           params[:captures] = [test.url]
 
           params.stubs(:to_json).returns json
@@ -297,7 +302,9 @@ describe CiInACan::Web do
           uuid = Object.new
           uuid.stubs(:generate).returns test.uuid
           UUID.stubs(:new).returns uuid
+        end
 
+        it "should not fail when we call it" do
           web.start_a_new_build
         end
 
