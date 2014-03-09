@@ -15,102 +15,51 @@ module CiInACan
     end
 
     get '/login' do
-      CiInACan::WebContent.full_page_of(
-<<EOF
-<form action="/login" method="post">
-Passphrase
-<input type="password" name="passphrase">
-<button type="submit">Submit</button>
-</form>
-EOF
-)
+      CiInACan::Web.new.login_page
     end
 
     post '/login' do
-      session[:passphrase] = params[:passphrase]
+      web = CiInACan::Web.new(params: params, session: session)
+      web.submit_a_passphrase
       redirect '/'
     end
 
     get '/test_result/:id.json' do
-      CiInACan::TestResult.find(params[:id]).to_json
+      CiInACan::Web.new(params: params).show_the_test_result_in_json
     end
 
     post %r{/repo/(.+)} do
 
-      unless session[:authenticated]
+      web = CiInACan::Web.new(params: params, session: session)
+      unless web.logged_in?
         redirect '/login'
         return
       end
-
-      params[:id] = params[:captures].first
-      commands = params[:commands].gsub("\r\n", "\n").split("\n")
-      commands = commands.map { |x| x.strip }.select { |x| x != '' }
-      repo = CiInACan::Repo.find params[:id]
-      repo = CiInACan::Repo.create(id: params[:id]) unless repo
-      repo.build_commands = commands
-      repo.save
-      redirect "/repo/#{params[:id]}"
+      repo = web.update_repo_details
+      redirect "/repo/#{repo.id}"
     end
 
     get %r{/repo/(.+)} do
+      web = CiInACan::Web.new(params: params, session: session)
 
-      unless session[:authenticated]
+      unless web.logged_in?
         redirect '/login'
         return
       end
 
-      params[:id] = params[:captures].first
-      repo = CiInACan::Repo.find(params[:id])
-      url      = repo ? repo.url : nil
-      commands = repo ? repo.build_commands.join("\n") : ''
-      CiInACan::WebContent.full_page_of(
-<<EOF
-<form action="/repo/#{params[:id]}" method="post">
-<div>#{url}</div>
-<textarea name="commands">
-#{commands}
-</textarea>
-<input type="submit">Submit</input>
-</form>
-EOF
-)
+      web.show_the_repo_edit_form
     end
 
     get '/test_result/:id' do
-      test_result = CiInACan::TestResult.find(params[:id])
-      CiInACan::WebContent.full_page_of test_result.to_html
+      CiInACan::Web.new(params: params).show_the_test_result
     end
 
     get '/' do
-      run_html = CiInACan::Run.all.map { |r| r.to_html }.join("\n")
-
-      CiInACan::WebContent.full_page_of(
-<<EOF
-    <table class="table table-bordered">
-      <tbody>
-      #{run_html}
-      </tbody>
-    </table>
-EOF
-)
+      CiInACan::Web.new.show_a_list_of_the_runs
     end
 
     post %r{/push/(.+)} do
-      capture = params[:captures].first.split('/')
-      api_key = capture.pop
-      id      = capture.join('/')
-
-      repo = CiInACan::Repo.find id
-      raise 'Could not find this repo' unless repo
-      raise 'Invalid API Key' unless repo.api_key == api_key
-
-      write_a_file_with params
-    end
-
-    def write_a_file_with params
-      data = params.to_json
-      File.open("#{self.class.jobs_location}/#{UUID.new.generate}.json", 'w') { |f| f.write data }
-      data
+      CiInACan::Web.new(params: params).start_a_new_build
     end
 
   end

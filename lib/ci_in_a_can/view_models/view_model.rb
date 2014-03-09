@@ -4,8 +4,12 @@ module CiInACan
 
     class ViewModel
 
-      def initialize value
+      def initialize value = nil
         @value = value
+      end
+
+      def the_original_value
+        @value
       end
 
       def method_missing(meth, *args, &blk)

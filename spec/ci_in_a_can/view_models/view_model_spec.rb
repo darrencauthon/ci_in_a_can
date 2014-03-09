@@ -17,4 +17,10 @@ describe CiInACan::ViewModels::ViewModel do
       
   end
 
+  it "should make the original value available" do
+    object = Object.new
+    result = ::CiInACan::ViewModels::ViewModel.new(object).the_original_value
+    result.must_be_same_as result
+  end
+
 end
