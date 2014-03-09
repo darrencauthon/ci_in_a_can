@@ -297,7 +297,7 @@ describe CiInACan::Web do
 
           CiInACan::Web.stubs(:jobs_location).returns test.jobs_location
 
-          File.stubs(:open)
+          CiInACan::FileSystem.stubs(:create_file)
 
           uuid = Object.new
           uuid.stubs(:generate).returns test.uuid
@@ -306,6 +306,16 @@ describe CiInACan::Web do
 
         it "should not fail when we call it" do
           web.start_a_new_build
+        end
+
+        it "should write a file" do
+          CiInACan::FileSystem.expects(:create_file)
+                              .with("#{test.jobs_location}/#{test.uuid}.json", json)
+          web.start_a_new_build
+        end
+
+        it "should return the json back" do
+          web.start_a_new_build.must_be_same_as json
         end
 
       end

@@ -43,6 +43,7 @@ module CiInACan
       raise 'Invalid API Key' unless repo.api_key == api_key
 
       write_a_file_with params
+      params.to_json
     end
 
     def show_a_list_of_the_runs
@@ -64,8 +65,8 @@ module CiInACan
 
     def write_a_file_with params
       data = params.to_json
-      File.open("#{self.class.jobs_location}/#{UUID.new.generate}.json", 'w') { |f| f.write data }
-      data
+      file = "#{self.class.jobs_location}/#{UUID.new.generate}.json"
+      CiInACan::FileSystem.create_file file, data
     end
 
   end
