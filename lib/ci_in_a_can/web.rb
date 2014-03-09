@@ -6,6 +6,10 @@ module CiInACan
 
     attr_accessor :params, :session
 
+    class << self
+      attr_accessor :jobs_location
+    end
+
     def login_page
       CiInACan::ViewModels::LoginForm.new.to_html
     end

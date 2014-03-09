@@ -269,4 +269,33 @@ describe CiInACan::Web do
 
   end
 
+  describe "starting a new build" do
+
+    it "should not fail when we call it" do
+      repo = Object.new
+      repo.stubs(:api_key).returns 'api_key'
+      json = Object.new
+      params[:captures] = ['account/name/api_key']
+
+      job_location = Object.new
+
+      params.stubs(:to_json).returns json
+
+      CiInACan::Repo.stubs(:find)
+                    .with('account/name')
+                    .returns repo
+
+      CiInACan::Web.stubs(:jobs_location).returns job_location
+
+      File.stubs(:open)
+
+      uuid = Object.new
+      uuid.stubs(:generate).returns 'the uuid'
+      UUID.stubs(:new).returns uuid
+
+      web.start_a_new_build
+    end
+
+  end
+
 end
