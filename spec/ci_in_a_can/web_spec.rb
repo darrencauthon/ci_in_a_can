@@ -41,6 +41,33 @@ describe CiInACan::Web do
 
   end
 
+  describe "showing the test result in html" do
+
+    it "should return the html results" do
+
+      params[:id] = Object.new
+      test_result = Object.new
+      web_content = Object.new
+      html        = Object.new
+
+      test_result.stubs(:to_html).returns html
+
+      CiInACan::TestResult.stubs(:find)
+                          .with(params[:id])
+                          .returns test_result
+
+      CiInACan::WebContent.stubs(:full_page_of)
+                          .with(html)
+                          .returns web_content
+
+      result = web.show_the_test_result
+
+      result.must_be_same_as web_content
+
+    end
+
+  end
+
   describe "showing the test result in json" do
 
     it "should return the json results" do
