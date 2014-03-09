@@ -34,13 +34,7 @@ module CiInACan
     end
 
     def start_a_new_build
-      capture = params[:captures].first.split('/')
-      api_key = capture.pop
-      id      = capture.join('/')
-
-      repo = CiInACan::Repo.find id
-      raise 'Could not find this repo' unless repo
-      raise 'Invalid API Key' unless repo.api_key == api_key
+      assert_that_the_new_build_is_valid
 
       write_a_file_with params
       params.to_json
@@ -67,6 +61,16 @@ module CiInACan
       data = params.to_json
       file = "#{self.class.jobs_location}/#{UUID.new.generate}.json"
       CiInACan::FileSystem.create_file file, data
+    end
+
+    def assert_that_the_new_build_is_valid
+      capture = params[:captures].first.split('/')
+      api_key = capture.pop
+      id      = capture.join('/')
+
+      repo = CiInACan::Repo.find id
+      raise 'Could not find this repo' unless repo
+      raise 'Invalid API Key' unless repo.api_key == api_key
     end
 
   end
