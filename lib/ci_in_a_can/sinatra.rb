@@ -2,7 +2,7 @@ require 'sinatra/base'
 
 module CiInACan
 
-  class App < Sinatra::Base
+  class Sinatra < Sinatra::Base
 
     enable :sessions
 

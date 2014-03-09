@@ -54,7 +54,7 @@ this_directory = File.expand_path(File.dirname(__FILE__) + '/../')
 eval("CiInACan::App.jobs_location = '\#{this_directory}' + '/jobs'")
 eval("CiInACan.results_location = '\#{this_directory}' + '/results'")
 
-use CiInACan::App
+use CiInACan::Sinatra
 run Sinatra::Application
 EOF
       end
