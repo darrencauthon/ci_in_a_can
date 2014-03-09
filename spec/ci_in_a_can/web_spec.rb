@@ -90,7 +90,7 @@ describe CiInACan::Web do
 
   end
 
-  describe "determining if the user is authenticated" do
+  describe "determining if the user is logged in" do
 
     it "should return true if the passphrase in session and ENV match" do
 
