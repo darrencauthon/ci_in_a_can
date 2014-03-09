@@ -51,7 +51,7 @@ require 'ci_in_a_can'
 
 this_directory = File.expand_path(File.dirname(__FILE__) + '/../')
 
-eval("CiInACan::App.jobs_location = '\#{this_directory}' + '/jobs'")
+eval("CiInACan::Web.jobs_location = '\#{this_directory}' + '/jobs'")
 eval("CiInACan.results_location = '\#{this_directory}' + '/results'")
 
 use CiInACan::Sinatra
