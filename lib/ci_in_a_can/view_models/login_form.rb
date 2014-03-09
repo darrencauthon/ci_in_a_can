@@ -5,7 +5,6 @@ module CiInACan
     class LoginForm < ViewModel
 
       def to_html
-        CiInACan::WebContent.layout_page_around(
 <<EOF
 <form action="/login" method="post">
 Passphrase
@@ -13,7 +12,6 @@ Passphrase
 <button type="submit">Submit</button>
 </form>
 EOF
-)
       end
 
     end

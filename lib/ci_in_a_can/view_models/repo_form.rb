@@ -5,7 +5,6 @@ module CiInACan
     class RepoForm < ViewModel
 
       def to_html
-        CiInACan::WebContent.layout_page_around(
 <<EOF
 <form action="/repo/#{id}" method="post">
 <div>#{url}</div>
@@ -15,7 +14,6 @@ module CiInACan
 <input type="submit">Submit</input>
 </form>
 EOF
-)
       end
 
     end

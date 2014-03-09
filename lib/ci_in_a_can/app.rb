@@ -7,11 +7,13 @@ module CiInACan
     enable :sessions
 
     get '/' do
-              CiInACan::Web.new.show_a_list_of_the_runs
+              html = CiInACan::Web.new.show_a_list_of_the_runs
+              CiInACan::WebContent.layout_page_around html
             end
 
     get '/login' do
-                   CiInACan::Web.new.login_page
+                   html = CiInACan::Web.new.login_page
+                   CiInACan::WebContent.layout_page_around html
                  end
 
     post '/login' do
@@ -21,8 +23,9 @@ module CiInACan
                   end
 
     get '/test_result/:id' do
-                             CiInACan::Web.new(params: params)
-                               .show_the_test_result
+                             html = CiInACan::Web.new(params: params)
+                                      .show_the_test_result
+                             CiInACan::WebContent.layout_page_around html
                            end
 
     get '/test_result/:id.json' do
@@ -38,7 +41,8 @@ module CiInACan
                            return
                          end
 
-                         web.show_the_repo_edit_form
+                         html = web.show_the_repo_edit_form
+                         CiInACan::WebContent.layout_page_around html
                        end
 
     post %r{/repo/(.+)} do

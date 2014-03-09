@@ -47,7 +47,6 @@ describe CiInACan::Web do
 
       params[:id] = Object.new
       test_result = Object.new
-      web_content = Object.new
       html        = Object.new
 
       test_result.stubs(:to_html).returns html
@@ -56,13 +55,9 @@ describe CiInACan::Web do
                           .with(params[:id])
                           .returns test_result
 
-      CiInACan::WebContent.stubs(:layout_page_around)
-                          .with(html)
-                          .returns web_content
-
       result = web.show_the_test_result
 
-      result.must_be_same_as web_content
+      result.must_be_same_as html
 
     end
 
