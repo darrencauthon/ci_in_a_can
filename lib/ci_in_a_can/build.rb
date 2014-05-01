@@ -14,6 +14,13 @@ module CiInACan
       GithubBuildParser.new.parse content
     end
 
+    def self.create_for file, working_location
+      build = CiInACan::Build.parse File.read(file)
+      build.id = UUID.new.generate
+      build.local_location = "#{working_location}/#{build.id}"
+      build
+    end
+
     def commands
       commands = CiInACan::Repo.find(repo).build_commands
       commands.count > 0 ? commands : ['bundle install', 'bundle exec rake']
