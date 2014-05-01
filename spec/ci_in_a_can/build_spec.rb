@@ -18,6 +18,67 @@ describe CiInACan::Build do
     build.created_at.must_be_same_as now
   end
 
+  describe "creating for a file" do
+
+    let(:file)             { Object.new }
+    let(:file_contents)    { Object.new }
+    let(:working_location) { "a" }
+
+    before do
+      File.stubs(:read).with(file).returns file_contents
+      CiInACan::Build.stubs(:parse).returns CiInACan::Build.new
+    end
+
+    it "should return a build parsed from the file contents" do
+
+      expected_build = CiInACan::Build.new
+
+      CiInACan::Build.stubs(:parse)
+                     .with(file_contents)
+                     .returns expected_build
+
+      build = CiInACan::Build.create_for file, working_location
+
+      build.must_be_same_as expected_build
+        
+    end
+
+    [
+      ['a', '1234'],
+      ['b', '5678'],
+    ].map { |x| Struct.new(:working_location, :unique_identifier).new(*x) }.each do |example|
+
+      describe "details" do
+
+        let(:working_location) { example.working_location }
+
+        it "should set the id to a new UUID" do
+          uuid = Object.new
+          UUID.stubs(:new).returns uuid
+          uuid.stubs(:generate).returns example.unique_identifier
+
+          build = CiInACan::Build.create_for file, working_location
+
+          build.id.must_equal example.unique_identifier
+            
+        end
+
+        it "should set the local location" do
+          uuid = Object.new
+          UUID.stubs(:new).returns uuid
+          uuid.stubs(:generate).returns example.unique_identifier
+
+          build = CiInACan::Build.create_for file, working_location
+
+          build.local_location.must_equal "#{example.working_location}/#{example.unique_identifier}"
+        end
+
+      end
+
+    end
+
+  end
+
   describe "commands" do
 
     let(:repo_name) { Object.new }

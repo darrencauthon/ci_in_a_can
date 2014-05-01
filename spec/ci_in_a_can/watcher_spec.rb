@@ -51,119 +51,31 @@ describe CiInACan::Watcher do
 
   end
 
-  describe "build a callback" do
+  describe "build a callback that will initiate the job runner" do
 
     let(:working_location) { Object.new }
 
     it "should return a Proc" do
+      CiInACan::Runner.stubs(:wake_up)
       CiInACan::Watcher.send(:build_callback, nil).is_a? Proc
-    end
-
-    it "should the proc can take three arrays" do
-      CiInACan::Watcher.send(:build_callback, nil).call [], [], []
     end
 
     describe "when a file is added" do
 
       let(:added_file) { Object.new }
-      let(:build)      { CiInACan::Build.new }
 
-      before do
-        content    = Object.new
-
-        File.stubs(:read).with(added_file).returns content
-
-        CiInACan::Build.stubs(:parse).with(content).returns build
-
-        CiInACan::Runner.stubs(:run).with build
-      end
-
-      it "should open the file, parse a build from it, and run it" do
-        CiInACan::Runner.expects(:run).with build
+      it "wake up the runner" do
+        CiInACan::Runner.expects(:wake_up)
         CiInACan::Watcher.send(:build_callback, nil).call [], [added_file], []
       end
 
-      [:working_location, :random_string].to_objects {[
-        ["abc", "123"],
-        ["123", "abc"],
-      ]}.each do |test|
+    end
 
-        describe "setting the local location" do
+    describe "when a file is not added" do
 
-          it "should assign the local location on the build, and the id" do
-
-            CiInACan::Runner.stubs(:wl).returns test.working_location
-
-            uuid = Object.new
-            uuid.stubs(:generate).returns test.random_string
-            UUID.stubs(:new).returns uuid
-
-            CiInACan::Runner.expects(:run).with do |b|
-              b.local_location.must_equal "#{test.working_location}/#{test.random_string}"
-              b.id.must_equal test.random_string
-              true
-            end
-
-            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
-          end
-
-          it "should delete the file" do
-
-            CiInACan::Runner.stubs(:wl).returns test.working_location
-
-            uuid = Object.new
-            uuid.stubs(:generate).returns test.random_string
-            UUID.stubs(:new).returns uuid
-            CiInACan::Runner.stubs(:run)
-
-            File.expects(:delete).with added_file
-
-            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
-          end
-
-          it "should not delete the file before it is read" do
-
-            content = Object.new
-            CiInACan::Runner.stubs(:wl).returns test.working_location
-
-            uuid = Object.new
-            uuid.stubs(:generate).returns test.random_string
-            UUID.stubs(:new).returns uuid
-            CiInACan::Runner.stubs(:run)
-
-            CiInACan::Build.stubs(:parse).with(content).returns build
-
-            delete_called = false
-            File.expects(:read).with do |added_file|
-              delete_called.must_equal false
-              true
-            end.returns content
-
-            File.expects(:delete).with do |added_file|
-              delete_called = true
-              true
-            end
-
-            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
-          end
-
-          it "should not let an error in deleting a file bubble up" do
-
-            CiInACan::Runner.stubs(:wl).returns test.working_location
-
-            uuid = Object.new
-            uuid.stubs(:generate).returns test.random_string
-            UUID.stubs(:new).returns uuid
-            CiInACan::Runner.stubs(:run)
-
-            File.stubs(:delete).raises 'k'
-
-            # this should not throw
-            CiInACan::Watcher.send(:build_callback, test.working_location).call [], [added_file], []
-          end
-
-        end
-
+      it "should not wake up the runner" do
+        CiInACan::Runner.expects(:wake_up).never
+        CiInACan::Watcher.send(:build_callback, nil).call [], [], []
       end
 
     end

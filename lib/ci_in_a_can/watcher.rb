@@ -19,27 +19,9 @@ module CiInACan
 
       def build_callback working_location
         Proc.new do |_, new_files, _|
-          next unless new_files.count > 0
-
-          build = create_a_build_for(new_files.first, working_location)
-
-          delete new_files.first
-
-          Runner.run build
-
+          next if new_files.count == 0
+          CiInACan::Runner.wake_up
         end
-      end
-
-      def delete file
-        File.delete file
-      rescue
-      end
-
-      def create_a_build_for file, working_location
-        build = CiInACan::Build.parse File.read(file)
-        build.id = UUID.new.generate
-        build.local_location = "#{working_location}/#{build.id}"
-        build
       end
 
     end
