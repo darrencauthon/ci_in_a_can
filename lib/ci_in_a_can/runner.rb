@@ -6,6 +6,7 @@ module CiInACan
       report_pending_status_for build
       clone_a_local_copy_of build
       test_results = run_the_tests_for build
+      CiInACan::Cleaner.remove_local_copy_of build
       send_notifications_for build, test_results
     end
 
