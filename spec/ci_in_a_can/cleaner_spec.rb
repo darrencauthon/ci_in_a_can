@@ -10,7 +10,7 @@ describe CiInACan::Cleaner do
 
         it "should exist" do
           build = CiInACan::Build.new(local_location: local_location)
-          CiInACan::Bash.expects(:run).with("rm -rf #{local_location}")
+          CiInACan::Bash.expects(:run).with("rm -rf \"#{local_location}\"")
           CiInACan::Cleaner.remove_local_copy_of build
         end
 
