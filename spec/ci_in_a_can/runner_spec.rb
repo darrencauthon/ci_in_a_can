@@ -65,4 +65,35 @@ describe CiInACan::Runner do
 
   end
 
+  describe "process job file" do
+
+    let(:file)             { Object.new }
+    let(:working_location) { Object.new }
+    let(:build)            { Object.new }
+
+    before do
+      CiInACan::Build.stubs(:create_for).returns build
+      CiInACan::Runner.stubs(:run).with build
+    end
+
+    it "should create a build for the file and run it" do
+      CiInACan::Build.stubs(:create_for).with(file, working_location).returns build
+      CiInACan::Runner.expects(:run).with build
+      CiInACan::Runner.process_job_file file, working_location
+    end
+
+    it "should delete the file" do
+      File.expects(:delete).with file
+      CiInACan::Runner.process_job_file file, working_location
+    end
+
+    it "should delete the file after the build has been created" do
+      File.expects(:delete).with do |file|
+        CiInACan::Build.stubs(:create_for).raises 'deleted too early'
+        true
+      end
+      CiInACan::Runner.process_job_file file, working_location
+    end
+  end
+
 end
