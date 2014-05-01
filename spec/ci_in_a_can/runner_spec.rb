@@ -2,6 +2,12 @@ require_relative '../spec_helper'
 
 describe CiInACan::Runner do
 
+  describe "wake up" do
+    it "should this should fire off a separate process that will read one file from the jobs folder" do
+      raise 'this does not exist yet.'
+    end
+  end
+
   describe "run" do
 
     let(:build)  { CiInACan::Build.new }
