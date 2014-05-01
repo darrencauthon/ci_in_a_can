@@ -20,13 +20,7 @@ module CiInACan
       def build_callback working_location
         Proc.new do |_, new_files, _|
           next unless new_files.count > 0
-
-          build = Build.create_for new_files.first, working_location
-
-          delete new_files.first
-
-          Runner.run build
-
+          Runner.process_job_file new_files.first, working_location
         end
       end
 
