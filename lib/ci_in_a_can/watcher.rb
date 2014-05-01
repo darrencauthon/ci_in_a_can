@@ -19,8 +19,8 @@ module CiInACan
 
       def build_callback working_location
         Proc.new do |_, new_files, _|
-          next unless new_files.count > 0
-          Runner.process_job_file new_files.first, working_location
+          next if new_files.count == 0
+          CiInACan::Runner.wake_up
         end
       end
 
