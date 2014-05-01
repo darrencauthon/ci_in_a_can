@@ -1,8 +1,5 @@
 module CiInACan
 
-  module Cleaner
-  end
-
   module Runner
 
     def self.run build
