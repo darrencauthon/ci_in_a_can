@@ -24,14 +24,6 @@ module CiInACan
         end
       end
 
-      def delete file
-        File.delete file
-      rescue
-      end
-
-      def create_a_build_for file, working_location
-      end
-
     end
 
   end
