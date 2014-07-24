@@ -37,7 +37,7 @@ module CiInACan
         {
           "#{@root}/Rakefile"           => files.rake_file,
           "#{@root}/service/service.rb" => files.service_file,
-          "#{@root}/web/stay_alive.rb"  => files.web_daemon,
+          "#{@root}/web/web.god"        => files.god_file,
           "#{@root}/web/config.ru"      => files.web_file
         }
       end

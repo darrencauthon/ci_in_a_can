@@ -19,14 +19,27 @@ module CiInACan
 desc "Start #{@id}"
 task :start do
   location = File.expand_path(File.dirname(__FILE__))
-  system "ruby service/service.rb start"
-  system "ruby web/stay_alive.rb start"
+  #system "ruby service/service.rb start"
+  system "god -c web/web.god"
 end
 
 desc "Stop #{@id}"
 task :stop do
   location = File.expand_path(File.dirname(__FILE__))
-  system "ruby service/service.rb stop"
+  #system "ruby service/service.rb stop"
+  system "god stop #{@id}_ci_web"
+end
+EOF
+      end
+
+      def god_file
+        <<EOF
+this_directory = File.expand_path(File.dirname(__FILE__))
+God.watch do |w|
+  w.name = '#{@id}_ci_web'
+  w.start = "rackup -p 80"
+  w.dir = "\#{this_directory}"
+  w.keepalive
 end
 EOF
       end
