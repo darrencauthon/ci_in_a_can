@@ -26,6 +26,16 @@ describe CiInACan::Build do
       result.is_a?(Seam::Flow).must_equal true
     end
 
+    it "should have the steps I think we need right now" do
+      result = CiInACan::Build.flow_for data
+      steps = result.steps
+      steps.count.must_equal 4
+      steps[0].name.must_equal "clone_the_github_repo_to_a_local_directory"
+      steps[1].name.must_equal "run_any_common_setup_commands"
+      steps[2].name.must_equal "run_the_tests"
+      steps[3].name.must_equal "report_the_test_results_back_to_github"
+    end
+
   end
 
 end

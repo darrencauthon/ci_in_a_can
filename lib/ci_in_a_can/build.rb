@@ -3,7 +3,12 @@ module CiInACan
   class Build
 
     def self.flow_for data
-      Seam::Flow.new
+      flow = Seam::Flow.new
+      flow.clone_the_github_repo_to_a_local_directory
+      flow.run_any_common_setup_commands
+      flow.run_the_tests
+      flow.report_the_test_results_back_to_github
+      flow
     end
 
     def start data
