@@ -1,4 +1,7 @@
 module CiInACan
-  module Build
+  class Build
+    def start data
+      CiInACan::Build.flow.start
+    end
   end
 end
