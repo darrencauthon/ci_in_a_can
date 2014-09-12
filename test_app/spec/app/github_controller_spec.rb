@@ -16,19 +16,25 @@ describe GithubController do
 
   describe "receive a github request" do
 
-    it "should start a build" do
+    let(:parser)         { Object.new }
+    let(:parsed_payload) { Object.new }
 
-      parsed_payload = Object.new
-
-      parser = Object.new
+    before do
       CiInACan::GithubPayloadParser.stubs(:new).returns parser
-
       parser.stubs(:parse).with(params).returns parsed_payload
 
+      CiInACan::Build.stubs(:start)
+      controller.stubs(:render)
+    end
+
+    it "should start a build" do
       CiInACan::Build.expects(:start).with(parsed_payload)
-
       controller.push
+    end
 
+    it "should return an empty json response" do
+      controller.expects(:render).with(json: {})
+      controller.push
     end
 
   end

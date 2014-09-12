@@ -9,5 +9,6 @@ class GithubController < ApplicationController
     #data = { 'payload' => data }.to_json
     parser = CiInACan::GithubPayloadParser.new
     CiInACan::Build.start parser.parse(data)
+    render json: {}
   end
 end
