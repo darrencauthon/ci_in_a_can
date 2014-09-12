@@ -44,3 +44,6 @@ gem 'mocha', group: [:development, :test]
 
 gem 'seam'
 gem 'seam-active_record'
+gem 'seam-sidekiq'
+
+gem 'sidekiq'

@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "systemu"
   spec.add_runtime_dependency "seam"
   spec.add_runtime_dependency "seam-active_record"
+  spec.add_runtime_dependency "seam-sidekiq"
 end
