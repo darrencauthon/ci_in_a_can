@@ -1,6 +1,3 @@
 #!/usr/bin/env ruby
 
-#require 'ci_in_a_can'
-require_relative '../lib/ci_in_a_can'
-
-CiInACan::Cli.run ARGV
+puts 'starting over'
