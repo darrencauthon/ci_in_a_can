@@ -1,5 +1,6 @@
 class GithubController < ApplicationController
   def push
-    CiInACan::Build.start params[:payload]
+    parser = CiInACan::GithubPayloadParser.new
+    CiInACan::Build.start parser.parse(params)
   end
 end
