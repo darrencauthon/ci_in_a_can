@@ -40,3 +40,4 @@ gem 'spring',        group: :development
 
 gem 'ci_in_a_can', path: '~/desktop/ci_in_a_can'
 
+gem 'mocha', group: [:development, :test]
