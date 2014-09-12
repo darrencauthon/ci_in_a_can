@@ -17,4 +17,15 @@ describe CiInACan::Build do
 
   end
 
+  describe "creating a workflow for data we received from github" do
+
+    let(:data) { Object.new }
+
+    it "should return an instance of a seam workflow" do
+      result = CiInACan::Build.flow_for data
+      result.is_a?(Seam::Flow).must_equal true
+    end
+
+  end
+
 end

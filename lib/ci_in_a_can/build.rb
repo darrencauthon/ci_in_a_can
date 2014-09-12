@@ -2,6 +2,10 @@ module CiInACan
 
   class Build
 
+    def self.flow_for data
+      Seam::Flow.new
+    end
+
     def start data
       workflow = create_a_workflow_considering data
       start_the_workflow workflow, data
