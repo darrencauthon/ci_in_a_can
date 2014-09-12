@@ -14,13 +14,13 @@ describe CiInACan::CloneTheGithubRepoToALocalDirectory do
       ['x', 'git clone x'],
       ['y', 'git clone y'],
       ['z', 'git clone z'],
-    ].map { |x| Struct.new(:clone_url, :bash_statement).new *x }.each do |example|
+    ].map { |x| Struct.new(:git_ssh, :bash_statement).new *x }.each do |example|
 
       describe "multiple examples" do
 
         it "should clone the repository" do
 
-          data = { 'clone_url' => example.clone_url }
+          data = { 'git_ssh' => example.git_ssh }
           effort = Struct.new(:data).new data
           worker.stubs(:effort).returns effort
 
