@@ -6,12 +6,6 @@ require 'contrast'
 require 'timecop'
 require 'mocha/setup'
 
-def CiInACan.results_location
-  File.expand_path(File.dirname(__FILE__) + '/temp')
-end
-
-def clear_all_persisted_data
-  Dir["#{CiInACan.results_location}/*.yml"].each do |file|
-    File.delete file
-  end
+def random_string
+  SecureRandom.uuid
 end
