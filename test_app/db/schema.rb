@@ -11,6 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20140912045912) do
+
+  create_table "seam_efforts", force: true do |t|
+    t.string   "effort_id"
+    t.string   "next_step"
+    t.datetime "next_execute_at"
+    t.boolean  "complete"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
